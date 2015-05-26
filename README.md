@@ -4,7 +4,7 @@ A minimalistic JSON Editor.
 #Setup
 Copy the repo into a public accessible directory (marked as `{$PATH}` in the code below). And include the following files:
 ```html
-<-- if you already include query you can skip this include -->
+<!-- if you already include query you can skip this include -->
 <script src="{$PATH}/libs/jQuery_v1.11.1.js"></script>
 
 <script src="{$PATH}/src/EventHandler.js"></script>
