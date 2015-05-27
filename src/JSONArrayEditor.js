@@ -1,6 +1,4 @@
 
-//TODO fix insertion point
-
 /**
  * editor for json arrays
  * @param {*} value initial value
@@ -15,11 +13,11 @@ function JSONArrayEditor(value,classPrefix) {
   var self=this;
   this._dom={
     root:$("<div>",{}),
-    insertFirst:$("<button>",{
+    insertLast:$("<button>",{
       class:this._classPrefix+"insElement",
       text:"+",
       click:function() {
-        self._addNodeFirst();
+        self._addNodeLast();
       }
     }),
     nodes:$("<div>",{
@@ -27,8 +25,8 @@ function JSONArrayEditor(value,classPrefix) {
     })
   };
 
-  this._dom.root.append(this._dom.insertFirst);
   this._dom.root.append(this._dom.nodes);
+  this._dom.root.append(this._dom.insertLast);
 
   this._readOnly=false;
 
@@ -101,17 +99,26 @@ JSONArrayEditor.prototype._createWrapper=function _createWrapper(value) {
   return wrapper;
 }
 
-JSONArrayEditor.prototype._addNodeFirst=function _addNodeFirst() {
+JSONArrayEditor.prototype._addNodeLast=function _addNodeLast() {
   if (this._readOnly) { return; }
 
-  /*
-   * FIXME use the same value type like the node after (if there is any)
-  */
-  var wrapper=this._createWrapper("");
+  var idx=this._nodes.length;
 
-  var idx=0;
+  if (idx>0) {
+    var before=this._nodes[idx-1];
+    var value=before.node.getValue();
+    //default to string if the editor output is not valid
+    if (value==undefined) { value=""; }
+    var type=JSONEditorHelper.getJSONType(value);
+  } else {
+    type="string";
+  }
+
+  var defaultVal=JSONEditorHelper.getTypeDefault(type);
+  var wrapper=this._createWrapper(defaultVal);
+
+  this._dom.nodes.append(wrapper.wrapper);
   this._nodes.splice(idx,0,wrapper);
-  this._dom.nodes.prepend(wrapper.wrapper);
 }
 
 
@@ -120,13 +127,21 @@ JSONArrayEditor.prototype._addNode=function _addNode(wrapper,node) {
 
   var idx=this._getIndexByWrapper(wrapper);
 
-  /*
-   * FIXME use the same value type like the node given
-  */
-  var wrapper=this._createWrapper("");
 
-  this._nodes.splice(idx+1,0,wrapper);
-  this._nodes[idx].wrapper.after(wrapper.wrapper);
+  if (idx>0) {
+    var before=this._nodes[idx-1];
+    var value=before.node.getValue();
+    if (value==undefined) { value=""; }
+    var type=JSONEditorHelper.getJSONType(value);
+  } else {
+    type="string";
+  }
+
+  var defaultVal=JSONEditorHelper.getTypeDefault(type);
+  var wrapper=this._createWrapper(defaultVal);
+
+  this._nodes[idx].wrapper.before(wrapper.wrapper);
+  this._nodes.splice(idx,0,wrapper);
 }
 
 JSONArrayEditor.prototype._removeNode=function _removeNode(wrapper) {

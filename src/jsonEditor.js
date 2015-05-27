@@ -1,4 +1,86 @@
 
+
+JSONEditorHelper={
+  /**
+   * default values for json objects
+   * use getTypeDefault to get a default json object!
+   * @type {Object}
+   */
+  _typeDefaults:{
+    string:"",
+    number:0,
+    boolean:true,
+    object:{},
+    array:[],
+    null:null
+  },
+
+  /**
+   * returns the json type name for a variable
+   * @param  {*} value a json object to get the type from
+   * @return {string}       the json type name
+   */
+  getJSONType:function getJSONType(value) {
+    switch (typeof value) {
+      case "string":
+        return "string";
+      case "number":
+        return "number";
+      case "object":
+        if (value==null) {
+          return "null";
+        }
+        if (Array.isArray(value)) {
+          return "array";
+        } else {
+          return "object";
+        }
+      case "boolean":
+        return "boolean";
+      default:
+        throw new Error("non json type");
+    }
+  },
+
+  /**
+   * returns if the type is passed by value or reference
+   * @param  {string}  type json type name
+   * @return {Boolean}      true if the type is passed by reference, false otherwise
+   */
+  byReference:function byReference(type) {
+    return ((type=="object") || (type=="array"));
+  },
+
+  /**
+   * returns a copy of a default value for an json type
+   * @param  {string} type json type to get the value of
+   * @return {*}      copy of the default value of the requested type
+   */
+  getTypeDefault:function getTypeDefault(type) {
+    var value;
+    if (this.byReference(type)) {
+      switch (type) {
+        case "object":
+          value={};
+          var defaultVal=this._typeDefaults[type];
+          for (var i in defaultVal[type]) {
+            value[i]=defaultVal[i];
+          }
+          break;
+        case "array":
+          value=this._typeDefaults[type].slice();
+          break;
+        default:
+          throw new Error("unknown type");
+      }
+    } else {
+      value=this._typeDefaults[type];
+    }
+
+    return value;
+  }
+}
+
 /**
  * editor for arbitrary json values
  * @param {*} value json value
@@ -36,33 +118,6 @@ JSONDynamicNode.prototype._nodes=undefined;
 
 JSONDynamicNode.prototype.onChange=undefined;
 
-JSONDynamicNode.prototype._jsonType=function _jsonType(value) {
-  if (value===undefined) { value={}; }
-  switch (typeof value) {
-    case "string":
-      return "string";
-    case "number":
-      return "number";
-    case "object":
-      if (value==null) {
-        return "null";
-      }
-      if (Array.isArray(value)) {
-        return "array";
-      } else {
-        return "object";
-      }
-    case "boolean":
-      return "boolean";
-    default:
-      throw new Error("non json type");
-  }
-}
-
-JSONDynamicNode.prototype._typeByValue=function _typeByValue(type) {
-  return ((type!="object") && (type!="array"));
-}
-
 JSONDynamicNode.prototype.setValue=function setValue(value) {
   var self=this;
 
@@ -70,8 +125,9 @@ JSONDynamicNode.prototype.setValue=function setValue(value) {
   this.dom._editor.getDom().detach();
 
   //set new value
-  this._value=value;
-  this._setType(this._jsonType(value));
+  //default to string if no value is given
+  this._value=(value!=undefined)?value:"";
+  this._setType(JSONEditorHelper.getJSONType(this._value));
 
   //insert new editor
   /*
@@ -127,36 +183,9 @@ JSONDynamicNode.prototype._createWrapper=function _createWrapper() {
   };
 }
 
-//default values to set if the type of a node is changed or a new node is created
-JSONDynamicNode.prototype._typeDefaults={
-  string:"",
-  number:0,
-  boolean:true,
-  object:{},
-  array:[],
-  null:null
-};
-
 JSONDynamicNode.prototype._setTypeDefault=function _setTypeDefault(type) {
-  var value;
-  if (!this._typeByValue(type)) {
-    switch (type) {
-      case "object":
-        value={};
-        for (var i in this._typeDefaults[type]) {
-          value[i]=this._typeDefaults[type][i];
-        }
-        break;
-      case "array":
-        value=this._typeDefaults[type].slice();
-        break;
-      default:
-        throw new Error("unknown type");
-    }
-  } else {
-    value=this._typeDefaults[type];
-  }
-  this.setValue(value);
+  var defaultValue=JSONEditorHelper.getTypeDefault(type);
+  this.setValue(defaultValue);
 }
 
 JSONDynamicNode.prototype._createTypeSelector=function _createTypeSelector() {

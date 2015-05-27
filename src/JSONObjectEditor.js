@@ -109,9 +109,7 @@ JSONObjectEditor.prototype._addNode=function _addNode(name) {
     throw new Error("name existing");
   }
 
-  /*
-   * FIXME use some value type ... (=> use/document some explicit strategy)
-  */
+  //create empty string by default
   var wrapper=this._createWrapper(name,"");
 
   this._wrappers.push(wrapper);
