@@ -1,12 +1,17 @@
 
-//FIXME rename to JSONEditor
-
 /**
  * editor for arbitrary json values
  * @param {*} value json value
+ * @param {string} classPrefix prefix to prepend to css class names
  */
-function JSONEditNode(value) {
+function JSONDynamicNode(value,classPrefix) {
   this.onChange=new EventHandler(this);
+
+  if (classPrefix==undefined) {
+    this._classPrefix="";
+  } else {
+    this._classPrefix=classPrefix;
+  }
 
   this._nodes={};
   this._type="string";
@@ -19,17 +24,19 @@ function JSONEditNode(value) {
   this.setValue(value);
 }
 
-JSONEditNode.prototype._type=undefined;
+JSONDynamicNode.prototype=new IEditor();
 
-JSONEditNode.prototype.dom=undefined;
+JSONDynamicNode.prototype._type=undefined;
 
-JSONEditNode.prototype._value=undefined;
+JSONDynamicNode.prototype.dom=undefined;
 
-JSONEditNode.prototype._nodes=undefined;
+JSONDynamicNode.prototype._value=undefined;
 
-JSONEditNode.prototype.onChange=undefined;
+JSONDynamicNode.prototype._nodes=undefined;
 
-JSONEditNode.prototype._jsonType=function _jsonType(value) {
+JSONDynamicNode.prototype.onChange=undefined;
+
+JSONDynamicNode.prototype._jsonType=function _jsonType(value) {
   if (value===undefined) { value={}; }
   switch (typeof value) {
     case "string":
@@ -52,11 +59,11 @@ JSONEditNode.prototype._jsonType=function _jsonType(value) {
   }
 }
 
-JSONEditNode.prototype._typeByValue=function _typeByValue(type) {
+JSONDynamicNode.prototype._typeByValue=function _typeByValue(type) {
   return ((type!="object") && (type!="array"));
 }
 
-JSONEditNode.prototype.setValue=function setValue(value) {
+JSONDynamicNode.prototype.setValue=function setValue(value) {
   var self=this;
 
   //reset editor
@@ -76,7 +83,7 @@ JSONEditNode.prototype.setValue=function setValue(value) {
         };
       })(i);
 
-      var node=new JSONEditNode(val);
+      var node=new JSONDynamicNode(val);
       node.onChange.register(listener);
   */
   this.dom._editor=this._getEditor(this._type);
@@ -87,29 +94,29 @@ JSONEditNode.prototype.setValue=function setValue(value) {
   this.onChange.trigger(this._value);
 }
 
-JSONEditNode.prototype.detach=function detach() {
+JSONDynamicNode.prototype.detach=function detach() {
   this.dom.wrapper.dom.frame.detach();
 }
 
-JSONEditNode.prototype.getValue=function getValue() {
+JSONDynamicNode.prototype.getValue=function getValue() {
   return this.dom._editor.getValue();
 }
 
-JSONEditNode.prototype._createWrapper=function _createWrapper() {
+JSONDynamicNode.prototype._createWrapper=function _createWrapper() {
   var dom={
     nodes:$("<div>",{
-      class:"nodes",
       css:{
         "padding-left":"20px"
       }
     })
   };
 
-  dom.frame=$("<div>", {
+  dom.frame=$("<span>", {
     html:[
       this.dom._types.dom.frame,
       dom.nodes
-    ]
+    ],
+    class:this._classPrefix+"JSONDynamicNode",
   });
 
   return {
@@ -121,7 +128,7 @@ JSONEditNode.prototype._createWrapper=function _createWrapper() {
 }
 
 //default values to set if the type of a node is changed or a new node is created
-JSONEditNode.prototype._typeDefaults={
+JSONDynamicNode.prototype._typeDefaults={
   string:"",
   number:0,
   boolean:true,
@@ -130,7 +137,7 @@ JSONEditNode.prototype._typeDefaults={
   null:null
 };
 
-JSONEditNode.prototype._setTypeDefault=function _setTypeDefault(type) {
+JSONDynamicNode.prototype._setTypeDefault=function _setTypeDefault(type) {
   var value;
   if (!this._typeByValue(type)) {
     switch (type) {
@@ -152,49 +159,49 @@ JSONEditNode.prototype._setTypeDefault=function _setTypeDefault(type) {
   this.setValue(value);
 }
 
-JSONEditNode.prototype._createTypeSelector=function _createTypeSelector() {
+JSONDynamicNode.prototype._createTypeSelector=function _createTypeSelector() {
   var self=this;
 
   var dom={
     stringSel:$("<span>",{
-      class:"typeSelOpt",
+      class:this._classPrefix+"typeSelOpt",
       text:"string",
     }).click(function() {
       self._setTypeDefault("string");
     }),
     numberSel:$("<span>",{
-      class:"typeSelOpt",
+      class:this._classPrefix+"typeSelOpt",
       text:"number"
     }).click(function() {
       self._setTypeDefault("number");
     }),
     booleanSel:$("<span>",{
-      class:"typeSelOpt",
+      class:this._classPrefix+"typeSelOpt",
       text:"bool"
     }).click(function() {
       self._setTypeDefault("boolean");
     }),
     objectSel:$("<span>",{
-      class:"typeSelOpt",
+      class:this._classPrefix+"typeSelOpt",
       text:"object"
     }).click(function() {
       self._setTypeDefault("object");
     }),
     arraySel:$("<span>",{
-      class:"typeSelOpt",
+      class:this._classPrefix+"typeSelOpt",
       text:"array"
     }).click(function() {
       self._setTypeDefault("array");
     }),
     nullSel:$("<span>",{
-      class:"typeSelOpt",
+      class:this._classPrefix+"typeSelOpt",
       text:"null"
     }).click(function() {
       self._setTypeDefault("null");
     })
   };
 
-  dom.frame=$("<div>",{
+  dom.frame=$("<span>",{
     html:[
       dom.stringSel,
       dom.numberSel,
@@ -214,7 +221,7 @@ JSONEditNode.prototype._createTypeSelector=function _createTypeSelector() {
  * free form editor for arbitrary text
  * @return {object} editor object containing get/setValue function
  */
-JSONEditNode.prototype._getEditor=function _getEditor(type) {
+JSONDynamicNode.prototype._getEditor=function _getEditor(type) {
   switch (type) {
     case "string":
       return this._getStringEditor();
@@ -233,20 +240,20 @@ JSONEditNode.prototype._getEditor=function _getEditor(type) {
   }
 }
 
-JSONEditNode.prototype._getStringEditor=function _getStringEditor() {
+JSONDynamicNode.prototype._getStringEditor=function _getStringEditor() {
   return new SimpleStringEditor("");
 }
 
-JSONEditNode.prototype._getNumberEditor=function _getNumberEditor() {
+JSONDynamicNode.prototype._getNumberEditor=function _getNumberEditor() {
   return new JSONNumberEditor(0);
 }
 
-JSONEditNode.prototype._getBooleanEditor=function _getBooleanEditor() {
+JSONDynamicNode.prototype._getBooleanEditor=function _getBooleanEditor() {
   var dom={};
   dom.buttons={
     true:$("<span>",{
       text:"true",
-      class:"boolEditButton",
+      class:this._classPrefix+"boolEditButton",
       click:function() {
         if (!editor._readOnly) {
           editor.setValue(true);
@@ -255,7 +262,7 @@ JSONEditNode.prototype._getBooleanEditor=function _getBooleanEditor() {
     }),
     false: $("<span>",{
       text:"false",
-      class:"boolEditButton",
+      class:this._classPrefix+"boolEditButton",
       click:function() {
         if (!editor._readOnly) {
           editor.setValue(false);
@@ -271,6 +278,7 @@ JSONEditNode.prototype._getBooleanEditor=function _getBooleanEditor() {
     ]
   });
 
+  var self=this;
   var editor={
     _value:true,
     _readOnly:false,
@@ -284,11 +292,11 @@ JSONEditNode.prototype._getBooleanEditor=function _getBooleanEditor() {
       editor._value=value;
 
       if (editor._value) {
-        dom.buttons.true.addClass("boolEditButtonActive");
-        dom.buttons.false.removeClass("boolEditButtonActive");
+        dom.buttons.true.addClass(self._classPrefix+"boolEditButtonActive");
+        dom.buttons.false.removeClass(self._classPrefix+"boolEditButtonActive");
       } else {
-        dom.buttons.true.removeClass("boolEditButtonActive");
-        dom.buttons.false.addClass("boolEditButtonActive");
+        dom.buttons.true.removeClass(self._classPrefix+"boolEditButtonActive");
+        dom.buttons.false.addClass(self._classPrefix+"boolEditButtonActive");
       }
     },
     getValue:function() {
@@ -298,15 +306,15 @@ JSONEditNode.prototype._getBooleanEditor=function _getBooleanEditor() {
   return editor;
 }
 
-JSONEditNode.prototype._getArrayEditor=function _getStringEditor() {
+JSONDynamicNode.prototype._getArrayEditor=function _getStringEditor() {
   return new JSONArrayEditor();
 }
 
-JSONEditNode.prototype._getObjectEditor=function _getStringEditor() {
+JSONDynamicNode.prototype._getObjectEditor=function _getStringEditor() {
   return new JSONObjectEditor();
 }
 
-JSONEditNode.prototype._getNullEditor=function _getStringEditor() {
+JSONDynamicNode.prototype._getNullEditor=function _getStringEditor() {
   var dom=$(); //has no gui
   var editor={
     getDom:function() {
@@ -327,19 +335,19 @@ JSONEditNode.prototype._getNullEditor=function _getStringEditor() {
   return editor;
 }
 
-JSONEditNode.prototype._setType=function _setType(type) {
+JSONDynamicNode.prototype._setType=function _setType(type) {
   var oSelStr=this._type+"Sel";
   var oSelector=this.dom._types.dom[oSelStr];
-  oSelector.removeClass("typeSelOptActive");
+  oSelector.removeClass(this._classPrefix+"typeSelOptActive");
 
   this._type=type;
 
   var selStr=this._type+"Sel";
   var selector=this.dom._types.dom[selStr];
-  selector.addClass("typeSelOptActive");
+  selector.addClass(this._classPrefix+"typeSelOptActive");
 }
 
-JSONEditNode.prototype.setReadOnly=function setReadOnly(readOnly) {
+JSONDynamicNode.prototype.setReadOnly=function setReadOnly(readOnly) {
   this.dom._editor.setReadOnly(readOnly);
 
   for (var i in this._nodes) {
@@ -347,36 +355,44 @@ JSONEditNode.prototype.setReadOnly=function setReadOnly(readOnly) {
   }
 }
 
-JSONEditNode.prototype.getDom=function getDom() {
+JSONDynamicNode.prototype.getDom=function getDom() {
   return this.dom.wrapper.dom.frame;
 }
 
 /**
- * JSONEditNode wrapper for the editor interface
+ * JSONDynamicNode wrapper for the editor interface
  * @param {*} value data display
  */
-function JSONEditor(value) {
+function JSONEditor(value,classPrefix) {
+  if (classPrefix==undefined) {
+    this._classPrefix="";
+  } else {
+    this._classPrefix=classPrefix;
+  }
+
   //setup gui
   var self=this;
   this._dom={
     selectors:[
       $("<span>",{
         text:"json",
-        class:"typeSelOpt",
+        class:this._classPrefix+"typeSelOpt",
         click:function() {
           self.setMode("json");
         }
       }),
       $("<span>",{
         text:"plain",
-        class:"typeSelOpt",
+        class:this._classPrefix+"typeSelOpt",
         click:function() {
           self.setMode("plain");
         }
       })
     ],
     switch:$("<div>",{}),
-    root:$("<div>",{})
+    root:$("<div>",{
+      class:this._classPrefix+"JSONEditor",
+    })
   }
   this._dom.switch.append(this._dom.selectors);
   this._dom.root.append(this._dom.switch);
@@ -451,18 +467,18 @@ JSONEditor.prototype.setMode=function setMode(mode) {
 
   //reset selectors
   for (var i in this._dom.selectors) {
-    this._dom.selectors[i].removeClass("typeSelOptActive");
+    this._dom.selectors[i].removeClass(this._classPrefix+"typeSelOptActive");
   }
 
   //setup new editor
   switch (mode) {
     case "json":
-      this._editor=new JSONEditNode();
-      this._dom.selectors[0].addClass("typeSelOptActive");
+      this._editor=new JSONDynamicNode(undefined,this.classPrefix);
+      this._dom.selectors[0].addClass(this._classPrefix+"typeSelOptActive");
       break;
     case "plain":
-      this._editor=new SimpleStringEditor();
-      this._dom.selectors[1].addClass("typeSelOptActive");
+      this._editor=new SimpleStringEditor(undefined,classPrefix);
+      this._dom.selectors[1].addClass(this._classPrefix+"typeSelOptActive");
       break;
     default:
       throw new Error("unknown editor mode");

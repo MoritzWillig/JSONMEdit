@@ -1,19 +1,30 @@
 
+//TODO fix insertion point
+
 /**
  * editor for json arrays
  * @param {*} value initial value
  */
-function JSONArrayEditor(value) {
+function JSONArrayEditor(value,classPrefix) {
+  if (classPrefix==undefined) {
+    this._classPrefix="";
+  } else {
+    this._classPrefix=classPrefix;
+  }
+
   var self=this;
   this._dom={
     root:$("<div>",{}),
     insertFirst:$("<button>",{
+      class:this._classPrefix+"insElement",
       text:"+",
       click:function() {
         self._addNodeFirst();
       }
     }),
-    nodes:$("<div>",{})
+    nodes:$("<div>",{
+      class:this._classPrefix+"JSONArrayEditor"
+    })
   };
 
   this._dom.root.append(this._dom.insertFirst);
@@ -26,7 +37,7 @@ function JSONArrayEditor(value) {
   this.setValue(value);
 }
 
-JSONArrayEditor.prototype=new EditorInterface(undefined);
+JSONArrayEditor.prototype=new IEditor();
 
 /**
  * set the value to be displayed in the editor
@@ -60,18 +71,20 @@ JSONArrayEditor.prototype.setValue=function setValue(value) {
 }
 
 JSONArrayEditor.prototype._createWrapper=function _createWrapper(value) {
-  var node=new JSONEditNode(value);
+  var node=new JSONDynamicNode(value,this._classPrefix);
   //create node wrapper to insert new elements
   var self=this;
   var wrapperGUI=$("<div>",{
     html:[
       $("<button>",{
+        class:this._classPrefix+"insElement",
         text:"+",
         click:function() {
           self._addNode(wrapper,node);
         }
       }),
       $("<button>",{
+        class:this._classPrefix+"delElement",
         text:"-",
         click:function() {
           self._removeNode(wrapper);

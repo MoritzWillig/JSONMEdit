@@ -3,13 +3,21 @@
  * string editor
  * @param {*} value initial value
  */
-function SimpleStringEditor(value) {
+function SimpleStringEditor(value,classPrefix) {
+  if (classPrefix==undefined) {
+    this._classPrefix="";
+  } else {
+    this._classPrefix=classPrefix;
+  }
+
   this._dom={
-    valField:$("<textarea>",{}).val(value)
+    valField:$("<textarea>",{
+      class:this._classPrefix+"SimpleStringEditor"
+    }).val(value)
   };
 }
 
-SimpleStringEditor.prototype=new EditorInterface(undefined);
+SimpleStringEditor.prototype=new IEditor();
 
 /**
  * set the value to be displayed in the editor

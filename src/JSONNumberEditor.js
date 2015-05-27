@@ -3,10 +3,18 @@
  * editor for json numbers
  * @param {*} value initial value
  */
-function JSONNumberEditor(value) {
+function JSONNumberEditor(value,classPrefix) {
+  if (classPrefix==undefined) {
+    this._classPrefix="";
+  } else {
+    this._classPrefix=classPrefix;
+  }
+
   var self=this;
   this._dom={
-    valField:$("<textarea>",{}).change(function() {
+    valField:$("<textarea>",{
+      class:this._classPrefix+"JSONNumberEditor",
+    }).change(function() {
       self._checkTextarea();
     })
   };
@@ -14,7 +22,7 @@ function JSONNumberEditor(value) {
   this.setValue(value);
 }
 
-JSONNumberEditor.prototype=new EditorInterface(undefined);
+JSONNumberEditor.prototype=new IEditor();
 
 /**
  * updates the textarea if an invalid value is entered
@@ -68,7 +76,6 @@ JSONNumberEditor.prototype.getValue=function getValue() {
   if (this._isValid(num)) {
     return num;
   } else {
-    //FIXME raise error here?
     return undefined;
   }
 }

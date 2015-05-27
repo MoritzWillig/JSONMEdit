@@ -3,10 +3,18 @@
  * editor for json objects
  * @param {*} value initial value
  */
-function JSONObjectEditor(value) {
+function JSONObjectEditor(value,classPrefix) {
+  if (classPrefix==undefined) {
+    this._classPrefix="";
+  } else {
+    this._classPrefix=classPrefix;
+  }
+
   var self=this;
   this._dom={
-    root:$("<div>",{}),
+    root:$("<div>",{
+      class:this._classPrefix+"JSONObjectEditor"
+    }),
     insertName:$("<input>",{}),
     insertNew:$("<button>",{
       text:"+",
@@ -29,7 +37,7 @@ function JSONObjectEditor(value) {
   this.setValue(value);
 }
 
-JSONObjectEditor.prototype=new EditorInterface(undefined);
+JSONObjectEditor.prototype=new IEditor();
 
 /**
  * set the value to be displayed in the editor
@@ -66,7 +74,7 @@ JSONObjectEditor.prototype.setValue=function setValue(value) {
 }
 
 JSONObjectEditor.prototype._createWrapper=function _createWrapper(name,value) {
-  var node=new JSONEditNode(value);
+  var node=new JSONDynamicNode(value,this._classPrefix);
   //create node wrapper to insert new elements
   var self=this;
   var wrapperGUI=$("<div>",{
