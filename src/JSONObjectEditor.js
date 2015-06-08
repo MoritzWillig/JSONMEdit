@@ -4,7 +4,9 @@
  * @param {*} value initial value
  */
 function JSONObjectEditor(value,classPrefix) {
-  if (classPrefix==undefined) {
+  EventHandler.apply(this,[this]);
+
+  if (classPrefix===undefined) {
     this._classPrefix="";
   } else {
     this._classPrefix=classPrefix;
@@ -38,12 +40,15 @@ function JSONObjectEditor(value,classPrefix) {
 }
 
 JSONObjectEditor.prototype=new IEditor();
+ClassHelper.$merge(JSONObjectEditor,EventHandler);
 
 /**
  * set the value to be displayed in the editor
  * @param {*} value data to be displayed
  */
 JSONObjectEditor.prototype.setValue=function setValue(value) {
+  this._undefined=(value===undefined);
+
   //remove old nodes
   for (var i in this._wrappers) {
     var wrapper=this._wrappers[i];
@@ -53,23 +58,25 @@ JSONObjectEditor.prototype.setValue=function setValue(value) {
   this._wrapperNames.length=0;
 
   //check for valid value
-  if (value==undefined) {
-    return;
-  }
+  if (this._undefined) {
+    this.setReadOnly(true);
+  } else {
+    if ((typeof value!="object")) {
+      throw new Error("invalid value type");
+    }
 
-  if ((typeof value!="object")) {
-    throw new Error("invalid value type");
-  }
+    //add sub nodes
+    for (var i in value) {
+      var val=value[i];
 
-  //add sub nodes
-  for (var i in value) {
-    var val=value[i];
+      var wrapper=this._createWrapper(i,val);
+      this._wrappers.push(wrapper);
+      this._wrapperNames.push(i);
 
-    var wrapper=this._createWrapper(i,val);
-    this._wrappers.push(wrapper);
-    this._wrapperNames.push(i);
+      this._dom.nodes.append(wrapper.wrapper);
+    }
 
-    this._dom.nodes.append(wrapper.wrapper);
+    this.setReadOnly(false);
   }
 }
 
@@ -142,13 +149,25 @@ JSONObjectEditor.prototype._getIdxByWrapper=function _getIdxByWrapper(wrapper) {
  * @return {*} value value represented by the editor
  */
 JSONObjectEditor.prototype.getValue=function getValue() {
-  var value={};
-  for (var i=0; i<this._wrappers.length; i++) {
-    var wrapper=this._wrappers[i];
-    var name=this._wrapperNames[i];
-    value[name]=wrapper.node.getValue();
+  if (this._undefined) {
+    return undefined;
+  } else {
+    var value={};
+    for (var i=0; i<this._wrappers.length; i++) {
+      var wrapper=this._wrappers[i];
+      var name=this._wrapperNames[i];
+      value[name]=wrapper.node.getValue();
+    }
+    return value;
   }
-  return value;
+}
+
+/**
+ * returns wether or not the value of the editor is valid
+ * @return {Boolean} true if the result is valid. false otherwise
+ */
+JSONObjectEditor.prototype.hasValidState=function hasValidState() {
+  return (!this._undefined);
 }
 
 /**

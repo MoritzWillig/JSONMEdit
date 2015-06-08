@@ -4,7 +4,9 @@
  * @param {*} value initial value
  */
 function JSONNumberEditor(value,classPrefix) {
-  if (classPrefix==undefined) {
+  EventHandler.apply(this,[this]);
+
+  if (classPrefix===undefined) {
     this._classPrefix="";
   } else {
     this._classPrefix=classPrefix;
@@ -23,12 +25,13 @@ function JSONNumberEditor(value,classPrefix) {
 }
 
 JSONNumberEditor.prototype=new IEditor();
+ClassHelper.$merge(JSONNumberEditor,EventHandler);
 
 /**
  * updates the textarea if an invalid value is entered
  */
 JSONNumberEditor.prototype._checkTextarea=function _checkTextarea() {
-  if (this.getValue()==undefined) {
+  if (this.getValue()===undefined) {
     this._dom.valField.css("background-color","#a20").css("color","#fff");
   } else {
     this._dom.valField.css("background-color","").css("color","");
@@ -62,8 +65,17 @@ JSONNumberEditor.prototype._parseNumber=function _parseNumber(value) {
  * @param {*} value data to be displayed
  */
 JSONNumberEditor.prototype.setValue=function setValue(value) {
-  this._dom.valField.val(value);
-  this._checkTextarea();
+  this._undefined=(value===undefined);
+  if (this._undefined) {
+    this.setReadOnly(true);
+    this._dom.valField.val("");
+  } else {
+    this._dom.valField.val(value);
+    this._checkTextarea();
+    this.setReadOnly(false);
+  }
+
+  this.trigger(this);
 }
 
 /**
@@ -73,11 +85,19 @@ JSONNumberEditor.prototype.setValue=function setValue(value) {
 JSONNumberEditor.prototype.getValue=function getValue() {
   var val=this._dom.valField.val();
   var num=this._parseNumber(val);
-  if (this._isValid(num)) {
+  if ((!this._undefined) && (this._isValid(num))) {
     return num;
   } else {
     return undefined;
   }
+}
+
+/**
+ * returns wether or not the value of the editor is valid
+ * @return {Boolean} true if the result is valid. false otherwise
+ */
+JSONNumberEditor.prototype.hasValidState=function hasValidState() {
+  return (!this._undefined);
 }
 
 /**

@@ -2,12 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>JSON M Edit - Documentation</title>
+    <title>JSON M Edit - Tests</title>
     <link rel="SHORTCUT ICON" href="../resources/media/images/jsonEdit16.ico">
+    <!-- include libs -->
     <script src="../libs/jQuery_v1.11.1.js"></script>
+    <script src="../libs/qUnit/qunit-1.18.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../libs/qUnit/qunit-1.18.0.css">
+
+    <!-- include interfaces -->
+    <script src="../src/interfaces/Interface.js"></script>
+    <script src="../src/interfaces/IEventHandler.js"></script>
+    <script src="../src/interfaces/IEditor.js"></script>
+
+    <!-- include code -->
     <script src="../src/EventHandler.js"></script>
     <script src="../src/JSONNullEditor.js"></script>
-    <script src="../src/EditorInterface.js"></script>
     <script src="../src/JSONNumberEditor.js"></script>
     <script src="../src/JSONObjectEditor.js"></script>
     <script src="../src/JSONArrayEditor.js"></script>
@@ -21,16 +30,18 @@
     <div id="header">
       <div class="pageAlign">
         <div id="headTitle">
-          <h1>JSON M Edit <small> - Documentation</small></h1>
+          <h1>JSON M Edit <small> - Tests</small></h1>
         </div>
         <div id="headNav">
-          <a href="../examples/index.html">Examples</a> | <a href="../docu/index.html">Documentation</a>
+          <a href="../examples/index.html">Examples</a> |
+          <a href="../docu/index.html">Documentation</a> |
+          <a href="../tests/index.html">Tests</a>
         </div>
       </div>
     </div>
     <div class="wrapper">
       <div id="content">
-        TODO
+        <div id="qunit"></div><hr>
       </div>
     </div>
     <div id="footer">

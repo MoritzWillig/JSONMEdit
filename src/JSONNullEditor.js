@@ -3,7 +3,7 @@
  * string editor
  * @param {*} value initial value
  */
-function SimpleStringEditor(value,classPrefix) {
+function JSONNullEditor(value,classPrefix) {
   EventHandler.apply(this,[this]);
 
   if (classPrefix===undefined) {
@@ -12,30 +12,28 @@ function SimpleStringEditor(value,classPrefix) {
     this._classPrefix=classPrefix;
   }
 
-  this._dom={
-    valField:$("<textarea>",{
-      class:this._classPrefix+"SimpleStringEditor"
-    })
-  };
+  this._dom=$();
 
   this.setValue(value);
 }
 
-SimpleStringEditor.prototype=new IEditor();
-ClassHelper.$merge(SimpleStringEditor,EventHandler);
+JSONNullEditor.prototype=new IEditor();
+ClassHelper.$merge(JSONNullEditor,EventHandler);
 
 /**
  * set the value to be displayed in the editor
  * @param {*} value data to be displayed
  */
-SimpleStringEditor.prototype.setValue=function setValue(value) {
+JSONNullEditor.prototype.setValue=function setValue(value) { console.log(">",value);
   this._undefined=(value===undefined);
   if (this._undefined) {
     this.setReadOnly(true);
-    this._dom.valField.val("");
   } else {
-    this._dom.valField.val(value);
-    this.setReadOnly(false);
+    if (value!==null) {
+      this.setValue(undefined);
+    } else {
+      this.setReadOnly(false);
+    }
   }
 
   this.trigger(this);
@@ -45,9 +43,9 @@ SimpleStringEditor.prototype.setValue=function setValue(value) {
  * gives the value currently represented by the editor
  * @return {*} value value represented by the editor
  */
-SimpleStringEditor.prototype.getValue=function getValue() {
+JSONNullEditor.prototype.getValue=function getValue() { console.log("<",this._undefined);
   if (!this._undefined) {
-    return this._dom.valField.val();
+    return null;
   } else {
     return undefined;
   }
@@ -57,7 +55,7 @@ SimpleStringEditor.prototype.getValue=function getValue() {
  * returns wether or not the value of the editor is valid
  * @return {Boolean} true if the result is valid. false otherwise
  */
-SimpleStringEditor.prototype.hasValidState=function hasValidState() {
+JSONNullEditor.prototype.hasValidState=function hasValidState() {
   return (!this._undefined);
 }
 
@@ -65,18 +63,14 @@ SimpleStringEditor.prototype.hasValidState=function hasValidState() {
  * returns the dom node which represents the editor
  * @return {JQuery DOM Node} dom node representing the editor
  */
-SimpleStringEditor.prototype.getDom=function getDom() {
-  return this._dom.valField;
+JSONNullEditor.prototype.getDom=function getDom() {
+  return this._dom;
 }
 
 /**
  * sets editor into readonly or read/write mode
  * @param {boolean} readOnly if true readonly is enabled otherwise writing is allowed
  */
-SimpleStringEditor.prototype.setReadOnly=function setReadOnly(readOnly) {
-  if (readOnly) {
-    this._dom.valField.prop('readOnly', true);
-  } else {
-    this._dom.valField.removeProp('readOnly');
-  }
+JSONNullEditor.prototype.setReadOnly=function setReadOnly(readOnly) {
+  //we are always readonly do nothing
 }

@@ -87,9 +87,9 @@ JSONEditorHelper={
  * @param {string} classPrefix prefix to prepend to css class names
  */
 function JSONDynamicNode(value,classPrefix) {
-  this.onChange=new EventHandler(this);
+  EventHandler.apply(this,[this]);
 
-  if (classPrefix==undefined) {
+  if (classPrefix===undefined) {
     this._classPrefix="";
   } else {
     this._classPrefix=classPrefix;
@@ -107,6 +107,7 @@ function JSONDynamicNode(value,classPrefix) {
 }
 
 JSONDynamicNode.prototype=new IEditor();
+ClassHelper.$merge(JSONDynamicNode,EventHandler);
 
 JSONDynamicNode.prototype._type=undefined;
 
@@ -119,35 +120,43 @@ JSONDynamicNode.prototype._nodes=undefined;
 JSONDynamicNode.prototype.onChange=undefined;
 
 JSONDynamicNode.prototype.setValue=function setValue(value) {
-  var self=this;
+  this._undefined=(value===undefined);
 
   //reset editor
   this.dom._editor.getDom().detach();
 
-  //set new value
-  //default to string if no value is given
-  this._value=(value!=undefined)?value:"";
-  this._setType(JSONEditorHelper.getJSONType(this._value));
+  if (this._undefined) {
+    //default to string editor if no value is given
+    this._setType("string");
+    this.dom._editor=this._getEditor(this._type);
+    this.setReadOnly(true);
+  } else {
+    var self=this;
 
-  //insert new editor
-  /*
-    FIXME the was updating value on change - add onChange to editorInterface or correct getValue
-    --some old code--
-      var listener=(function (nodeName) {
-        return function(value) {
-          self._value[nodeName]=value;
-        };
-      })(i);
+    //set new value
+    this._value=value;
+    this._setType(JSONEditorHelper.getJSONType(this._value));
 
-      var node=new JSONDynamicNode(val);
-      node.onChange.register(listener);
-  */
-  this.dom._editor=this._getEditor(this._type);
+    //insert new editor
+    /*
+      FIXME the old editor was updating value on change - add onChange to editorInterface or correct getValue
+      --some old code--
+        var listener=(function (nodeName) {
+          return function(value) {
+            self._value[nodeName]=value;
+          };
+        })(i);
 
-  this.dom.wrapper.dom.nodes.append(this.dom._editor.getDom());
-  this.dom._editor.setValue(this._value);
+        var node=new JSONDynamicNode(val);
+        node.onChange.register(listener);
+    */
+    this.dom._editor=this._getEditor(this._type);
 
-  this.onChange.trigger(this._value);
+    this.dom.wrapper.dom.nodes.append(this.dom._editor.getDom());
+    this.dom._editor.setValue(this._value);
+
+    this.setReadOnly(false);
+  }
 }
 
 JSONDynamicNode.prototype.detach=function detach() {
@@ -155,7 +164,15 @@ JSONDynamicNode.prototype.detach=function detach() {
 }
 
 JSONDynamicNode.prototype.getValue=function getValue() {
-  return this.dom._editor.getValue();
+  if (this._undefined) {
+    return undefined;
+  } else {
+    return this.dom._editor.getValue();
+  }
+}
+
+JSONDynamicNode.prototype.hasValidState=function hasValidState() {
+  return (!this._undefined);
 }
 
 JSONDynamicNode.prototype._createWrapper=function _createWrapper() {
@@ -344,24 +361,7 @@ JSONDynamicNode.prototype._getObjectEditor=function _getStringEditor() {
 }
 
 JSONDynamicNode.prototype._getNullEditor=function _getStringEditor() {
-  var dom=$(); //has no gui
-  var editor={
-    getDom:function() {
-      return dom;
-    },
-    setReadOnly:function(readOnly) {
-      //we are always read only. do nothing
-    },
-    setValue:function(value) {
-      if (value!=null) {
-        throw new Exception("value has to be null");
-      }
-    },
-    getValue:function() {
-      return null;
-    }
-  };
-  return editor;
+  return new JSONNullEditor(null);
 }
 
 JSONDynamicNode.prototype._setType=function _setType(type) {
@@ -393,7 +393,7 @@ JSONDynamicNode.prototype.getDom=function getDom() {
  * @param {*} value data display
  */
 function JSONEditor(value,classPrefix) {
-  if (classPrefix==undefined) {
+  if (classPrefix===undefined) {
     this._classPrefix="";
   } else {
     this._classPrefix=classPrefix;
@@ -431,12 +431,14 @@ function JSONEditor(value,classPrefix) {
   this.setValue(value);
 };
 
+JSONEditor.prototype=new IEditor();
+
 /**
  * displayed the given json structure in the editor
  * @param {string} value json string to be displayed
  */
 JSONEditor.prototype.setValue=function setValue(value) {
-  if (value==undefined) {
+  if (value===undefined) {
     this._editor.setValue("");
     return;
   }
