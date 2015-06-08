@@ -24,7 +24,7 @@ ClassHelper.$merge(JSONNullEditor,EventHandler);
  * set the value to be displayed in the editor
  * @param {*} value data to be displayed
  */
-JSONNullEditor.prototype.setValue=function setValue(value) { console.log(">",value);
+JSONNullEditor.prototype.setValue=function setValue(value) {
   this._undefined=(value===undefined);
   if (this._undefined) {
     this.setReadOnly(true);
@@ -43,7 +43,7 @@ JSONNullEditor.prototype.setValue=function setValue(value) { console.log(">",val
  * gives the value currently represented by the editor
  * @return {*} value value represented by the editor
  */
-JSONNullEditor.prototype.getValue=function getValue() { console.log("<",this._undefined);
+JSONNullEditor.prototype.getValue=function getValue() {
   if (!this._undefined) {
     return null;
   } else {
