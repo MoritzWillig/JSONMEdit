@@ -4,6 +4,8 @@
  * @param {*} value initial value
  */
 function JSONArrayEditor(value,classPrefix) {
+  EventHandler.apply(this,[this]);
+
   if (classPrefix===undefined) {
     this._classPrefix="";
   } else {
@@ -70,6 +72,8 @@ JSONArrayEditor.prototype.setValue=function setValue(value) {
 
     this.setReadOnly(false);
   }
+
+  this.trigger(this);
 }
 
 JSONArrayEditor.prototype._createWrapper=function _createWrapper(value) {

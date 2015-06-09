@@ -26,17 +26,18 @@ ClassHelper.$merge(JSONNullEditor,EventHandler);
  */
 JSONNullEditor.prototype.setValue=function setValue(value) {
   this._undefined=(value===undefined);
+
   if (this._undefined) {
     this.setReadOnly(true);
+    this.trigger(this);
   } else {
     if (value!==null) {
       this.setValue(undefined);
     } else {
       this.setReadOnly(false);
+      this.trigger(this);
     }
   }
-
-  this.trigger(this);
 }
 
 /**

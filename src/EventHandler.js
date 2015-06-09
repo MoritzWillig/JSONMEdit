@@ -20,8 +20,8 @@ EventHandler.prototype.register=function register(listener) {
 
 EventHandler.prototype.unregister=function unregister(listener) {
   var idx={};
-  if (this.isRegistered(listener,idx)) {
-    throw new Error("listener is already registered");
+  if (!this.isRegistered(listener,idx)) {
+    throw new Error("listener is not registered");
   }
 
   this._listeners.splice(idx.idx,1);

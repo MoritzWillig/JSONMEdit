@@ -78,6 +78,8 @@ JSONObjectEditor.prototype.setValue=function setValue(value) {
 
     this.setReadOnly(false);
   }
+
+  this.trigger(this);
 }
 
 JSONObjectEditor.prototype._createWrapper=function _createWrapper(name,value) {
