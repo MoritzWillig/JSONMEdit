@@ -1,4 +1,10 @@
 
+/**
+ * Error class for interfaces
+ * @class
+ * @extends {Error}
+ * @param {string} message message of the error
+ */
 function InterfaceError(message) {
   Error.prototype.constructor.apply(this,arguments);
   this.name="InterfaceError";
@@ -7,7 +13,10 @@ function InterfaceError(message) {
 
 InterfaceError.prototype=Error.prototype;
 
-
+/**
+ * Generic Interface class
+ * @class
+ */
 function Interface() {
   //tripple underscore: _ for class internal, __ for browsers, ...
   Object.defineProperty(this,"___interfaces",{
@@ -16,6 +25,13 @@ function Interface() {
   });
 }
 
+/**
+ * wrapp a function and mark it as an interface function
+ * @static
+ * @param {function} func     function to wrap
+ * @param {boolean} optional states wether or not the implementation is required (false) or optional (true)
+ * @returns {function} the parameter func
+ */
 Interface.IfcFunc=function IfcFunc(func,optional) {
   if (optional==undefined) { optional=false; }
 
@@ -28,7 +44,7 @@ Interface.IfcFunc=function IfcFunc(func,optional) {
 }
 
 /**
- * copies an interface into this interface
+ * include an interface into this interface
  * @param  {Interface} interface interface to include
  */
 Object.defineProperty(Interface.prototype,"$include",{
@@ -58,7 +74,7 @@ Object.defineProperty(Interface.prototype,"$include",{
 });
 
 /**
- * checks if an interface is included into the current interface
+ * check if an interface is included into the current interface
  * @param  {Interface} interface interface to check
  */
 Object.defineProperty(Interface.prototype,"$includes",{
@@ -70,7 +86,7 @@ Object.defineProperty(Interface.prototype,"$includes",{
 });
 
 /**
- * checks if a property was introduces by an interface
+ * checks if a property was introduced by an interface
  * @param  {string} name name of the property
  * @return {Boolean}      true if an interface introduced the property, false otherwise
  */
@@ -96,10 +112,10 @@ Object.defineProperty(Interface.prototype,"$fromInterface",{
     return false;
     */
   }
-})
+});
 
 /**
- * test if every method of an interface was implemented in another interface
+ * test if every required method of an interface is implemented
  * @param  {Interface} interfaceUUTInst interface to test
  * @param  {Interface}  interface interface to compare to
  * @return {Array}              array containing all methods that are missing
@@ -130,9 +146,20 @@ Object.defineProperty(Interface,"$test",{
   }
 });
 
-
+/**
+ * helper for merging classes derived from interfaces
+ */
 function ClassHelper() {}
 
+/**
+ * merges an class into another
+ *
+ * notice that this does merging does include the constructor call of the included class
+ * to do this call NAMEOFINCLUDEDCLASS.apply(this);
+ * @param  {class} to         class to merge to
+ * @param  {class} from       class to merge into the to class
+ * @param  {boolean} overwrite wether or not existing function should be overwritten (interface placeholder function are always overwritten)
+ */
 Object.defineProperty(ClassHelper,"$merge",{
   configurable:false,
   enumerable:false,

@@ -1,6 +1,9 @@
 
 /**
- * interface for editors
+ * Interface for editors
+ * @interface
+ * @extends {Interface}
+ * @implements {IEventHandler}
  * @param {*} value initial value
  */
 function IEditor(value) {}
@@ -17,23 +20,24 @@ IEditor.prototype.setValue=Interface.IfcFunc(function setValue(value) {
 });
 
 /**
- * gives the value currently represented by the editor
- * @return {*} value value represented by the editor
+ * get the value currently represented in the editor or undefined if not in a valid state
+ * @return {*|undefined} value value represented in the editor
  */
 IEditor.prototype.getValue=Interface.IfcFunc(function getValue() {
   throw new InterfaceError("not implemented");
 });
 
 /**
- * if present, changes the mode the editor uses to interpret data
- * @param {string} data mode name
+ * change the mode the editor uses to interpret data
+ * @optional
+ * @param {string} mode mode name
  */
-IEditor.prototype.setMode=Interface.IfcFunc(function setMode(data) {
+IEditor.prototype.setMode=Interface.IfcFunc(function setMode(mode) {
   //if the editor has only 1 mode this can be ignored
 },true);
 
 /**
- * returns the dom node which represents the editor
+ * get the dom node which contains the editor
  * @return {JQuery DOM Node} dom node representing the editor
  */
 IEditor.prototype.getDom=Interface.IfcFunc(function getDom() {
@@ -41,7 +45,7 @@ IEditor.prototype.getDom=Interface.IfcFunc(function getDom() {
 });
 
 /**
- * sets editor into readonly or read/write mode
+ * set the editor into readonly or read/write mode
  * @param {boolean} readOnly if true readonly is enabled otherwise writing is allowed
  */
 IEditor.prototype.setReadOnly=Interface.IfcFunc(function setReadOnly(readOnly) {
@@ -49,7 +53,7 @@ IEditor.prototype.setReadOnly=Interface.IfcFunc(function setReadOnly(readOnly) {
 });
 
 /**
- * determines if the editor is in a valid state
+ * determine if the editor is in a valid state
  * @return {Boolean} true if the editor is in a valid state, false otherwise
  */
 IEditor.prototype.hasValidState=Interface.IfcFunc(function hasValidState() {

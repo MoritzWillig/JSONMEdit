@@ -1,7 +1,10 @@
 
 /**
- * string editor
+ * Plain text string editor
+ * @implements {IEditor}
+ * @mixes {EventHandler}
  * @param {*} value initial value
+ * @param {string} classPrefix css class prefix for dom elements
  */
 function SimpleStringEditor(value,classPrefix) {
   EventHandler.apply(this,[this]);
@@ -42,8 +45,8 @@ SimpleStringEditor.prototype.setValue=function setValue(value) {
 }
 
 /**
- * gives the value currently represented by the editor
- * @return {*} value value represented by the editor
+ * get the value currently represented in the editor or undefined if not in a valid state
+ * @return {string|undefined} value value represented in the editor
  */
 SimpleStringEditor.prototype.getValue=function getValue() {
   if (!this._undefined) {
@@ -54,15 +57,15 @@ SimpleStringEditor.prototype.getValue=function getValue() {
 }
 
 /**
- * returns wether or not the value of the editor is valid
- * @return {Boolean} true if the result is valid. false otherwise
+ * determine if the editor is in a valid state
+ * @return {Boolean} true if the editor is in a valid state, false otherwise
  */
 SimpleStringEditor.prototype.hasValidState=function hasValidState() {
   return (!this._undefined);
 }
 
 /**
- * returns the dom node which represents the editor
+ * get the dom node which contains the editor
  * @return {JQuery DOM Node} dom node representing the editor
  */
 SimpleStringEditor.prototype.getDom=function getDom() {
@@ -70,7 +73,7 @@ SimpleStringEditor.prototype.getDom=function getDom() {
 }
 
 /**
- * sets editor into readonly or read/write mode
+ * set the editor into readonly or read/write mode
  * @param {boolean} readOnly if true readonly is enabled otherwise writing is allowed
  */
 SimpleStringEditor.prototype.setReadOnly=function setReadOnly(readOnly) {

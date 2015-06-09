@@ -1,7 +1,10 @@
 
 /**
- * editor for json numbers
+ * Editor for json numbers
+ * @implements {IEditor}
+ * @mixes {EventHandler}
  * @param {*} value initial value
+ * @param {string} classPrefix css class prefix for dom elements
  */
 function JSONNumberEditor(value,classPrefix) {
   EventHandler.apply(this,[this]);
@@ -28,7 +31,8 @@ JSONNumberEditor.prototype=new IEditor();
 ClassHelper.$merge(JSONNumberEditor,EventHandler);
 
 /**
- * updates the textarea if an invalid value is entered
+ * modify the textarea whether or not an invalid value is entered
+ * @private
  */
 JSONNumberEditor.prototype._checkTextarea=function _checkTextarea() {
   if (this.getValue()===undefined) {
@@ -39,7 +43,8 @@ JSONNumberEditor.prototype._checkTextarea=function _checkTextarea() {
 }
 
 /**
- * tests if the value is a number
+ * test if the value is a number
+ * @private
  * @param  {*}  value value to be tested
  * @return {Boolean}       wether or not the value is a number
  */
@@ -48,7 +53,8 @@ JSONNumberEditor.prototype._isValid=function _isValid(value) {
 }
 
 /**
- * parses a value to a number
+ * parse a value to a number
+ * @private
  * @param  {*} value value to be parsed
  * @return {number/undefined}       the parsed number or undefined on error
  */
@@ -79,8 +85,8 @@ JSONNumberEditor.prototype.setValue=function setValue(value) {
 }
 
 /**
- * gives the value currently represented by the editor
- * @return {*} value value represented by the editor
+ * get the value currently represented in the editor or undefined if not in a valid state
+ * @return {number|undefined} value value represented in the editor
  */
 JSONNumberEditor.prototype.getValue=function getValue() {
   var val=this._dom.valField.val();
@@ -93,15 +99,15 @@ JSONNumberEditor.prototype.getValue=function getValue() {
 }
 
 /**
- * returns wether or not the value of the editor is valid
- * @return {Boolean} true if the result is valid. false otherwise
+ * determine if the editor is in a valid state
+ * @return {Boolean} true if the editor is in a valid state, false otherwise
  */
 JSONNumberEditor.prototype.hasValidState=function hasValidState() {
   return (!this._undefined);
 }
 
 /**
- * returns the dom node which represents the editor
+ * get the dom node which contains the editor
  * @return {JQuery DOM Node} dom node representing the editor
  */
 JSONNumberEditor.prototype.getDom=function getDom() {
@@ -109,7 +115,7 @@ JSONNumberEditor.prototype.getDom=function getDom() {
 }
 
 /**
- * sets editor into readonly or read/write mode
+ * set the editor into readonly or read/write mode
  * @param {boolean} readOnly if true readonly is enabled otherwise writing is allowed
  */
 JSONNumberEditor.prototype.setReadOnly=function setReadOnly(readOnly) {

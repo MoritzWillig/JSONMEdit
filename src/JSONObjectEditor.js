@@ -1,7 +1,10 @@
 
 /**
- * editor for json objects
+ * Editor for json objects
+ * @implements {IEditor}
+ * @mixes {EventHandler}
  * @param {*} value initial value
+ * @param {string} classPrefix css class prefix for dom elements
  */
 function JSONObjectEditor(value,classPrefix) {
   EventHandler.apply(this,[this]);
@@ -82,6 +85,13 @@ JSONObjectEditor.prototype.setValue=function setValue(value) {
   this.trigger(this);
 }
 
+/**
+ * create a wrapper for an object item
+ * @private
+ * @param  {string} name  key of the item
+ * @param  {*} value value of the item
+ * @return {JQuery DOM Node}       wrapper representing the item
+ */
 JSONObjectEditor.prototype._createWrapper=function _createWrapper(name,value) {
   var node=new JSONDynamicNode(value,this._classPrefix);
   //create node wrapper to insert new elements
@@ -111,6 +121,12 @@ JSONObjectEditor.prototype._createWrapper=function _createWrapper(name,value) {
   return wrapper;
 }
 
+/**
+ * append a new node to the items list
+ * @private
+ * @param {string} name key of the item
+ * @throws {Error} If the name already exists
+ */
 JSONObjectEditor.prototype._addNode=function _addNode(name) {
   if (this._readOnly) { return; }
 
@@ -127,6 +143,11 @@ JSONObjectEditor.prototype._addNode=function _addNode(name) {
   this._dom.nodes.append(wrapper.wrapper);
 }
 
+/**
+ * remove a node from the item list
+ * @private
+ * @param  {object} wrapper wrapper to remove
+ */
 JSONObjectEditor.prototype._removeNode=function _removeNode(wrapper) {
   if (this._readOnly) { return; }
 
@@ -139,6 +160,13 @@ JSONObjectEditor.prototype._removeNode=function _removeNode(wrapper) {
   this._wrapperNames.splice(idx,1);
 }
 
+/**
+ * get the index of a wrapper in the wrappers list
+ * @private
+ * @param  {object} wrapper wrapper object to search for
+ * @return {integer}         index of the wrapper in the list
+ * @throws {Error} If the wrapper is not in the list
+ */
 JSONObjectEditor.prototype._getIdxByWrapper=function _getIdxByWrapper(wrapper) {
   var idx=this._wrappers.indexOf(wrapper);
   if (idx==-1) { throw new Error("invalid wrapper"); }
@@ -147,8 +175,8 @@ JSONObjectEditor.prototype._getIdxByWrapper=function _getIdxByWrapper(wrapper) {
 }
 
 /**
- * gives the value currently represented by the editor
- * @return {*} value value represented by the editor
+ * get the value currently represented in the editor or undefined if not in a valid state
+ * @return {*|undefined} value value represented in the editor
  */
 JSONObjectEditor.prototype.getValue=function getValue() {
   if (this._undefined) {
@@ -165,15 +193,15 @@ JSONObjectEditor.prototype.getValue=function getValue() {
 }
 
 /**
- * returns wether or not the value of the editor is valid
- * @return {Boolean} true if the result is valid. false otherwise
+ * determine if the editor is in a valid state
+ * @return {Boolean} true if the editor is in a valid state, false otherwise
  */
 JSONObjectEditor.prototype.hasValidState=function hasValidState() {
   return (!this._undefined);
 }
 
 /**
- * returns the dom node which represents the editor
+ * get the dom node which contains the editor
  * @return {JQuery DOM Node} dom node representing the editor
  */
 JSONObjectEditor.prototype.getDom=function getDom() {
@@ -181,7 +209,7 @@ JSONObjectEditor.prototype.getDom=function getDom() {
 }
 
 /**
- * sets editor into readonly or read/write mode
+ * set the editor into readonly or read/write mode
  * @param {boolean} readOnly if true readonly is enabled otherwise writing is allowed
  */
 JSONObjectEditor.prototype.setReadOnly=function setReadOnly(readOnly) {
