@@ -2,13 +2,20 @@
 A minimalistic JSON Editor.
 
 #Setup
-Copy the repo into a public accessible directory (marked as `{$PATH}` in the code below). And include the following files:
+Copy the repo into a public accessible directory (marked as `{$PATH}` in the
+code below). And include the following files:
 ```html
 <!-- if you already include query you can skip this include -->
 <script src="{$PATH}/libs/jQuery_v1.11.1.js"></script>
 
+<!-- include interfaces -->
+<script src="{$PATH}/src/interfaces/Interface.js"></script>
+<script src="{$PATH}/src/interfaces/IEventHandler.js"></script>
+<script src="{$PATH}/src/interfaces/IEditor.js"></script>
+
+<!-- include code -->
 <script src="{$PATH}/src/EventHandler.js"></script>
-<script src="{$PATH}/src/EditorInterface.js"></script>
+<script src="{$PATH}/src/JSONNullEditor.js"></script>
 <script src="{$PATH}/src/JSONNumberEditor.js"></script>
 <script src="{$PATH}/src/JSONObjectEditor.js"></script>
 <script src="{$PATH}/src/JSONArrayEditor.js"></script>
@@ -17,6 +24,20 @@ Copy the repo into a public accessible directory (marked as `{$PATH}` in the cod
 
 <link rel="stylesheet" type="text/css" href="{$PATH}/resources/css/jsonEditor.css">
 ```
+
+#Usage
+Every Editor included, implements the IEditor interface and therefore can be
+used on its own to edit their specific JSON type.
+
+The ``JSONDynamicNode``-Editor dynamically chooses the right Editor for the JSON
+value given. Be carefull when passing arbitratry objects (especially if not
+parsed from JSON and make sure to only pass objects with non circular
+references. No check for circlular references is done and therefore the
+application will loop infinitely if such an object is passed as a parameter.
+
+For plain JSON strings the ``JSONEditor`` can be used its parses the JSON string
+and displays it in a `JSONDynamicNode`` (for non valid JSON string a fallback
+to text mode is done).
 
 #License
 The MIT License (MIT)
