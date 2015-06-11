@@ -1,6 +1,7 @@
 
 /**
  * Editor for json arrays
+ * @class
  * @implements {IEditor}
  * @mixes {EventHandler}
  * @param {*} value initial value
@@ -45,7 +46,7 @@ ClassHelper.$merge(JSONArrayEditor,EventHandler);
 
 /**
  * set the value to be displayed in the editor
- * @param {*[]} value data to be displayed
+ * @param {Array.<*>} value data to be displayed
  * @throws {Error} If the value is no array
  */
 JSONArrayEditor.prototype.setValue=function setValue(value) {
@@ -84,7 +85,7 @@ JSONArrayEditor.prototype.setValue=function setValue(value) {
  * create a wrapper element for an array field
  * @private
  * @param  {*} value value to be displayed by the editor in the field
- * @return {JQuery DOM Node}       jquery object representing an array field
+ * @return {JQueryDOMNode}       jquery object representing an array field
  */
 JSONArrayEditor.prototype._createWrapper=function _createWrapper(value) {
   var node=new JSONDynamicNode(value,this._classPrefix);
@@ -190,7 +191,8 @@ JSONArrayEditor.prototype._removeNode=function _removeNode(wrapper) {
 
 /**
  * get the index of a wrapper in the wrapper list
- * @param  {object} wrapper wrpper to search for
+ * @private
+ * @param  {object} wrapper wrapper to search for
  * @return {integer}         index of the wrapper
  * @throws {Error} If the wrapper is not in the list
  */
@@ -203,7 +205,7 @@ JSONArrayEditor.prototype._getIndexByWrapper=function _getIndexByWrapper(wrapper
 
 /**
  * get the value currently represented in the editor or undefined if not in a valid state
- * @return {*[]|undefined} value value represented in the editor
+ * @return {Array.<*>|undefined} value value represented in the editor
  */
 JSONArrayEditor.prototype.getValue=function getValue() {
   if (this._undefined) {
@@ -228,7 +230,7 @@ JSONArrayEditor.prototype.hasValidState=function hasValidState() {
 
 /**
  * get the dom node which contains the editor
- * @return {JQuery DOM Node} dom node representing the editor
+ * @return {JQueryDOMNode} dom node representing the editor
  */
 JSONArrayEditor.prototype.getDom=function getDom() {
   return this._dom.root;

@@ -1,6 +1,7 @@
 
 /**
  * Editor for json objects
+ * @class
  * @implements {IEditor}
  * @mixes {EventHandler}
  * @param {*} value initial value
@@ -90,7 +91,7 @@ JSONObjectEditor.prototype.setValue=function setValue(value) {
  * @private
  * @param  {string} name  key of the item
  * @param  {*} value value of the item
- * @return {JQuery DOM Node}       wrapper representing the item
+ * @return {JQueryDOMNode}       wrapper representing the item
  */
 JSONObjectEditor.prototype._createWrapper=function _createWrapper(name,value) {
   var node=new JSONDynamicNode(value,this._classPrefix);
@@ -202,7 +203,7 @@ JSONObjectEditor.prototype.hasValidState=function hasValidState() {
 
 /**
  * get the dom node which contains the editor
- * @return {JQuery DOM Node} dom node representing the editor
+ * @return {JQueryDOMNode} dom node representing the editor
  */
 JSONObjectEditor.prototype.getDom=function getDom() {
   return this._dom.root;

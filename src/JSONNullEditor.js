@@ -1,6 +1,7 @@
 
 /**
  * Editor for json null objects
+ * @class
  * @implements {IEditor}
  * @mixes {EventHandler}
  * @param {*} value initial value
@@ -65,7 +66,7 @@ JSONNullEditor.prototype.hasValidState=function hasValidState() {
 
 /**
  * get the dom node which contains the editor
- * @return {JQuery DOM Node} dom node representing the editor
+ * @return {JQueryDOMNode} dom node representing the editor
  */
 JSONNullEditor.prototype.getDom=function getDom() {
   return this._dom;

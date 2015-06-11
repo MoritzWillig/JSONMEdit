@@ -2,26 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>JSON M Edit - Documentation</title>
+    <title>JSON M Edit - Home - Documentation</title>
     <link rel="SHORTCUT ICON" href="../resources/media/images/jsonEdit16.ico">
-    <script src="../libs/jQuery_v1.11.1.js"></script>
-    <script src="../src/EventHandler.js"></script>
-    <script src="../src/JSONNullEditor.js"></script>
-    <script src="../src/EditorInterface.js"></script>
-    <script src="../src/JSONNumberEditor.js"></script>
-    <script src="../src/JSONObjectEditor.js"></script>
-    <script src="../src/JSONArrayEditor.js"></script>
-    <script src="../src/SimpleStringEditor.js"></script>
-    <script src="../src/jsonEditor.js"></script>
-    <script src="./js/index.js"></script>
-    <link rel="stylesheet" type="text/css" href="../resources/css/jsonEditor.css">
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <!--<link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">-->
+
     <link rel="stylesheet" type="text/css" href="../resources/css/htmlLayout.css">
   </head>
   <body>
     <div id="header">
       <div class="pageAlign">
         <div id="headTitle">
-          <h1>JSON M Edit <small> - Documentation</small></h1>
+          <h1>JSON M Edit <small> - Home - Documentation</small></h1>
         </div>
         <div id="headNav">
           <a href="../examples/index.html">Examples</a> |
@@ -31,11 +26,97 @@
       </div>
     </div>
     <div class="wrapper">
+      <div id="menu">
+        <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EventHandler.html">EventHandler</a></li><li><a href="Interface.html">Interface</a></li><li><a href="InterfaceError.html">InterfaceError</a></li><li><a href="JSONArrayEditor.html">JSONArrayEditor</a></li><li><a href="JSONDynamicNode.html">JSONDynamicNode</a></li><li><a href="JSONEditor.html">JSONEditor</a></li><li><a href="JSONNullEditor.html">JSONNullEditor</a></li><li><a href="JSONNumberEditor.html">JSONNumberEditor</a></li><li><a href="JSONObjectEditor.html">JSONObjectEditor</a></li><li><a href="SimpleStringEditor.html">SimpleStringEditor</a></li></ul><h3>Interfaces</h3><ul><li><a href="IEditor.html">IEditor</a></li><li><a href="IEventHandler.html">IEventHandler</a></li></ul><h3>Global</h3><ul><li><a href="global.html#ClassHelper">ClassHelper</a></li></ul>
+      </div>
       <div id="content">
-        TODO
+        
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>JSON Edit</h1><p>A minimalistic JSON Editor.</p>
+<h1>Setup</h1><p>Copy the repo into a public accessible directory (marked as <code>{$PATH}</code> in the
+code below). And include the following files:</p>
+<pre class="prettyprint source lang-html"><code>&lt;!-- if you already include query you can skip this include -->
+&lt;script src=&quot;{$PATH}/libs/jQuery_v1.11.1.js&quot;>&lt;/script>
+
+&lt;!-- include interfaces -->
+&lt;script src=&quot;{$PATH}/src/interfaces/Interface.js&quot;>&lt;/script>
+&lt;script src=&quot;{$PATH}/src/interfaces/IEventHandler.js&quot;>&lt;/script>
+&lt;script src=&quot;{$PATH}/src/interfaces/IEditor.js&quot;>&lt;/script>
+
+&lt;!-- include code -->
+&lt;script src=&quot;{$PATH}/src/EventHandler.js&quot;>&lt;/script>
+&lt;script src=&quot;{$PATH}/src/JSONNullEditor.js&quot;>&lt;/script>
+&lt;script src=&quot;{$PATH}/src/JSONNumberEditor.js&quot;>&lt;/script>
+&lt;script src=&quot;{$PATH}/src/JSONObjectEditor.js&quot;>&lt;/script>
+&lt;script src=&quot;{$PATH}/src/JSONArrayEditor.js&quot;>&lt;/script>
+&lt;script src=&quot;{$PATH}/src/SimpleStringEditor.js&quot;>&lt;/script>
+&lt;script src=&quot;{$PATH}/src/jsonEditor.js&quot;>&lt;/script>
+
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;{$PATH}/resources/css/jsonEditor.css&quot;></code></pre><h1>Usage</h1><p>Every Editor included, implements the IEditor interface and therefore can be
+used on its own to edit their specific JSON type.</p>
+<p>The <code>JSONDynamicNode</code>-Editor dynamically chooses the right Editor for the JSON
+value given. Be carefull when passing arbitratry objects (especially if not
+parsed from JSON and make sure to only pass objects with non circular
+references. No check for circlular references is done and therefore the
+application will loop infinitely if such an object is passed as a parameter.</p>
+<p>For plain JSON strings the <code>JSONEditor</code> can be used its parses the JSON string
+and displays it in a `JSONDynamicNode`` (for non valid JSON string a fallback
+to text mode is done).</p>
+<h1>License</h1><p>The MIT License (MIT)</p>
+<p>Copyright (c) 2015 Moritz Willig</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p></article>
+    </section>
+
+
+
+
+
+
+
+        <script> prettyPrint(); </script>
+        <script src="scripts/linenumber.js"> </script>
       </div>
     </div>
     <div id="footer">
+      <footer>
+        Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.1</a> on Thu Jun 11 2015 15:08:05 GMT+0200 (CEST)
+      </footer>
       <div class="pageAlign">
     </div>
     </div>

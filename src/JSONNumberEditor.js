@@ -1,6 +1,7 @@
 
 /**
  * Editor for json numbers
+ * @class
  * @implements {IEditor}
  * @mixes {EventHandler}
  * @param {*} value initial value
@@ -108,7 +109,7 @@ JSONNumberEditor.prototype.hasValidState=function hasValidState() {
 
 /**
  * get the dom node which contains the editor
- * @return {JQuery DOM Node} dom node representing the editor
+ * @return {JQueryDOMNode} dom node representing the editor
  */
 JSONNumberEditor.prototype.getDom=function getDom() {
   return this._dom.valField;

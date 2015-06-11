@@ -1,6 +1,7 @@
 
 /**
  * Plain text string editor
+ * @class
  * @implements {IEditor}
  * @mixes {EventHandler}
  * @param {*} value initial value
@@ -66,7 +67,7 @@ SimpleStringEditor.prototype.hasValidState=function hasValidState() {
 
 /**
  * get the dom node which contains the editor
- * @return {JQuery DOM Node} dom node representing the editor
+ * @return {JQueryDOMNode} dom node representing the editor
  */
 SimpleStringEditor.prototype.getDom=function getDom() {
   return this._dom.valField;

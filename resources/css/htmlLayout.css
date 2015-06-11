@@ -72,7 +72,6 @@ body {
 }
 
 #content {
-  width:880px;
   height:100%;
   display:table-cell;
 
@@ -99,4 +98,52 @@ body {
 
 #footer a {
   color:#fff !important;
+}
+
+
+#menu {
+  display: table-cell;
+  width: 220px;
+  border-right: 1px solid #222;
+  padding-left: 9px;
+  padding-bottom: 9px;
+}
+
+#menu ul {
+  font-family: 'Lucida Grande', 'Lucida Sans Unicode', arial, sans-serif;
+  font-size: 100%;
+  line-height: 17px;
+  padding:0;
+  margin:0;
+  list-style-type:none;
+}
+
+#menu h2 a, #menu h2 a:visited {
+    color: #A35A00;
+    text-decoration: none;
+    padding:10px;
+}
+
+#menu h3 {
+    margin-top: 12px;
+}
+
+#menu li {
+    margin-top: 6px;
+}
+
+#menu a {
+    color: #5C5954;
+}
+
+#menu a:visited {
+    color: #5C5954;
+}
+
+#menu a:active {
+    color: #5C5954;
+}
+
+#content h1, #content h2, #content h3 {
+  color:#000;
 }

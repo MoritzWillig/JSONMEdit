@@ -83,6 +83,7 @@ JSONEditorHelper={
 
 /**
  * Editor for arbitrary json objects
+ * @class
  * @implements {IEditor}
  * @mixes {EventHandler}
  * @param {*} value initial value
@@ -120,7 +121,7 @@ JSONDynamicNode.prototype._type=undefined;
 /**
  * dom node of the editor
  * @private
- * @type {JQuery DOM Node}
+ * @type {JQueryDOMNode}
  */
 JSONDynamicNode.prototype.dom=undefined;
 
@@ -200,7 +201,7 @@ JSONDynamicNode.prototype.hasValidState=function hasValidState() {
 /**
  * create a wrapper for the sub editors
  * @private
- * @return {JQuery DOM Node}       wrapper representing the editor gui
+ * @return {JQueryDOMNode}       wrapper representing the editor gui
  */
 JSONDynamicNode.prototype._createWrapper=function _createWrapper() {
   var dom={
@@ -240,7 +241,7 @@ JSONDynamicNode.prototype._setTypeDefault=function _setTypeDefault(type) {
 /**
  * create a ui for selecting node types
  * @private
- * @return {JSON DOM Node} node containing the type selector
+ * @return {JQueryDOMNode} node containing the type selector
  */
 JSONDynamicNode.prototype._createTypeSelector=function _createTypeSelector() {
   var self=this;
@@ -460,7 +461,7 @@ JSONDynamicNode.prototype.setReadOnly=function setReadOnly(readOnly) {
 
 /**
  * get the dom node which contains the editor
- * @return {JQuery DOM Node} dom node representing the editor
+ * @return {JQueryDOMNode} dom node representing the editor
  */
 JSONDynamicNode.prototype.getDom=function getDom() {
   return this.dom.wrapper.dom.frame;
@@ -470,6 +471,7 @@ JSONDynamicNode.prototype.getDom=function getDom() {
 
 /**
  * Editor for editing json strings
+ * @class
  * @implements {IEditor}
  * @mixes {EventHandler}
  * @param {*} value initial value
@@ -619,7 +621,7 @@ JSONEditor.prototype.setMode=function setMode(mode) {
 
 /**
  * get the dom node which contains the editor
- * @return {JQuery DOM Node} dom node representing the editor
+ * @return {JQueryDOMNode} dom node representing the editor
  */
 JSONEditor.prototype.getDom=function getDom() {
   return this._dom.root;

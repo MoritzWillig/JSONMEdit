@@ -13,6 +13,7 @@ EventHandler.prototype=new IEventHandler();
 
 /**
  * get the index of a listener in the listeners list
+ * @private
  * @param  {function} listener listener to search in list
  * @return {integer}          index of the listener in the list or -1 if not found
  */

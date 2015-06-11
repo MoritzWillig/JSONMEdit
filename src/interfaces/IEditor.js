@@ -38,7 +38,7 @@ IEditor.prototype.setMode=Interface.IfcFunc(function setMode(mode) {
 
 /**
  * get the dom node which contains the editor
- * @return {JQuery DOM Node} dom node representing the editor
+ * @return {JQueryDOMNode} dom node representing the editor
  */
 IEditor.prototype.getDom=Interface.IfcFunc(function getDom() {
   throw new InterfaceError("not implemented");
