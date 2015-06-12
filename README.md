@@ -35,7 +35,7 @@ parsed from JSON and make sure to only pass objects with non circular
 references. No check for circlular references is done and therefore the
 application will loop infinitely if such an object is passed as a parameter.
 
-For plain JSON strings the ``JSONEditor`` can be used its parses the JSON string
+For plain JSON strings the ``JSONEditor`` can be used. It parses the JSON string
 and displays it in a `JSONDynamicNode`` (for non valid JSON string a fallback
 to text mode is done).
 
