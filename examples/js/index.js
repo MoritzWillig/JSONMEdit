@@ -10,13 +10,15 @@ var test_obj={
   filepath:null
 };
 
-//store editor instance
+//store provider
+var provider;
+//store editor
 var editor;
 
 
 $("body").ready(function() {
-  //create editor
-  editor=new JSONEditor();
+  provider=new DefaultJSONEditorProvider();
+  editor=new JSONEditor(undefined,provider);
 
   //modify gui & append to document
   var dom=editor.getDom();

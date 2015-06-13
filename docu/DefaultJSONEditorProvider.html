@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>JSON M Edit - Class: Interface - Documentation</title>
+    <title>JSON M Edit - Class: DefaultJSONEditorProvider - Documentation</title>
     <link rel="SHORTCUT ICON" href="../resources/media/images/jsonEdit16.ico">
 
     <script src="scripts/prettify/prettify.js"> </script>
@@ -16,7 +16,7 @@
     <div id="header">
       <div class="pageAlign">
         <div id="headTitle">
-          <h1>JSON M Edit <small> - Class: Interface - Documentation</small></h1>
+          <h1>JSON M Edit <small> - Class: DefaultJSONEditorProvider - Documentation</small></h1>
         </div>
         <div id="headNav">
           <a href="../examples/index.html">Examples</a> |
@@ -40,7 +40,7 @@
 <header>
     
         <h2>
-        Interface
+        DefaultJSONEditorProvider
         </h2>
         
     
@@ -53,14 +53,15 @@
 
     
 
-    <h4 class="name" id="Interface"><span class="type-signature"></span>new Interface<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="DefaultJSONEditorProvider"><span class="type-signature"></span>new DefaultJSONEditorProvider<span class="signature">(classPrefix<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Generic Interface class
+    Provider for JSON editors
+Provides JSON editors for JSON type names, a "json" editor and a "text" editor
 </div>
 
 
@@ -69,6 +70,67 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>classPrefix</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">prefix for css classes</td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -87,6 +149,13 @@
 
     
 
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="IEditorProvider.html">IEditorProvider</a></li>
+        
+    </ul></dd>
     
 
     
@@ -148,14 +217,14 @@
 
     
 
-    <h4 class="name" id=".IfcFunc"><span class="type-signature">(static) </span>IfcFunc<span class="signature">(func, optional)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    <h4 class="name" id="disposeEditor"><span class="type-signature"></span>disposeEditor<span class="signature">(instance)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    wrapp a function and mark it as an interface function
+    notify the provider that an editor can be removed
 </div>
 
 
@@ -191,13 +260,13 @@
 
         <tr>
             
-                <td class="name"><code>func</code></td>
+                <td class="name"><code>instance</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="IEditor.html">IEditor</a></span>
 
 
             
@@ -207,30 +276,7 @@
 
             
 
-            <td class="description last">function to wrap</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>optional</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">states wether or not the implementation is required (false) or optional (true)</td>
+            <td class="description last">editor instance to dispose</td>
         </tr>
 
     
@@ -254,6 +300,13 @@
 
     
 
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="IEditorProvider.html#disposeEditor">IEditorProvider#disposeEditor</a></li>
+        
+    </ul></dd>
     
 
     
@@ -289,11 +342,173 @@
 
 
 
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="requestEditor"><span class="type-signature"></span>requestEditor<span class="signature">(name)</span><span class="type-signature"> &rarr; {<a href="IEditor.html">IEditor</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    request an JSON editor for json type names, "json" and "text"
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">type name for an editor type</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="implements">Implements:</dt>
+    <dd class="implements"><ul>
+        
+            <li><a href="IEditorProvider.html#requestEditor">IEditorProvider#requestEditor</a></li>
+        
+    </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        If name is no known constant
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
 <h5>Returns:</h5>
 
         
 <div class="param-desc">
-    the parameter func
+    requested editor instance
 </div>
 
 
@@ -304,7 +519,7 @@
     </dt>
     <dd>
         
-<span class="param-type">function</span>
+<span class="param-type"><a href="IEditor.html">IEditor</a></span>
 
 
     </dd>

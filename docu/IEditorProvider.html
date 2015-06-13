@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>JSON M Edit - Interface: IEventHandler - Documentation</title>
+    <title>JSON M Edit - Interface: IEditorProvider - Documentation</title>
     <link rel="SHORTCUT ICON" href="../resources/media/images/jsonEdit16.ico">
 
     <script src="scripts/prettify/prettify.js"> </script>
@@ -16,7 +16,7 @@
     <div id="header">
       <div class="pageAlign">
         <div id="headTitle">
-          <h1>JSON M Edit <small> - Interface: IEventHandler - Documentation</small></h1>
+          <h1>JSON M Edit <small> - Interface: IEditorProvider - Documentation</small></h1>
         </div>
         <div id="headNav">
           <a href="../examples/index.html">Examples</a> |
@@ -40,7 +40,7 @@
 <header>
     
         <h2>
-        IEventHandler
+        IEditorProvider
         </h2>
         
     
@@ -50,7 +50,8 @@
     <div class="container-overview">
     
         
-            <div class="description">Interface for EventHandlers</div>
+            <div class="description">Interface for providing editors
+Provides editors on request. No editor is instance is delivered twice</div>
         
 
         
@@ -122,13 +123,13 @@
 
         
             
-<h4 class="name" id="clear"><span class="type-signature"></span>clear<span class="type-signature"></span></h4>
+<h4 class="name" id="disposeEditor"><span class="type-signature"></span>disposeEditor<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    removes all listenerss from the EventHandler
+    notify the provider that an editor can be removed
 </div>
 
 
@@ -179,184 +180,13 @@
 
         
             
-<h4 class="name" id="isRegistered"><span class="type-signature"></span>isRegistered<span class="type-signature"></span></h4>
+<h4 class="name" id="requestEditor"><span class="type-signature"></span>requestEditor<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    check if a listener is currently registered
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="register"><span class="type-signature"></span>register<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    register a listener to the EventHandler
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="trigger"><span class="type-signature"></span>trigger<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    notify all registered listeners
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="unregister"><span class="type-signature"></span>unregister<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    unregister a listener from the EventHandler
+    request an editor type by defined constant names
 </div>
 
 

@@ -87,10 +87,13 @@ JSONEditorHelper={
  * @implements {IEditor}
  * @mixes {EventHandler}
  * @param {*} value initial value
+ * @param {IEditorProvider} provider a editor provider providing a json editor for json type names
  * @param {string} classPrefix css class prefix for dom elements
  */
-function JSONDynamicNode(value,classPrefix) {
+function JSONDynamicNode(value,provider,classPrefix) {
   EventHandler.apply(this,[this]);
+
+  this._provider=provider;
 
   if (classPrefix===undefined) {
     this._classPrefix="";
@@ -102,7 +105,7 @@ function JSONDynamicNode(value,classPrefix) {
 
   this.dom={};
   this.dom._types=this._createTypeSelector();
-  this.dom._editor=this._getEditor(this.type);
+  this.dom._editor=this._getEditor(this._type);
   this.dom.wrapper=this._createWrapper();
 
   this.setValue(value);
@@ -308,130 +311,7 @@ JSONDynamicNode.prototype._createTypeSelector=function _createTypeSelector() {
  * @return {IEditor} editor capable of handling the given json type
  */
 JSONDynamicNode.prototype._getEditor=function _getEditor(type) {
-  switch (type) {
-    case "string":
-      return this._getStringEditor();
-    case "number":
-      return this._getNumberEditor();
-    case "boolean":
-      return this._getBooleanEditor();
-    case "array":
-      return this._getArrayEditor();
-    case "object":
-      return this._getObjectEditor();
-    case "null":
-      return this._getNullEditor();
-    default:
-      return this._getStringEditor();
-  }
-}
-
-/**
- * get the editor for editing strings
- * @private
- * @return {IEditor} editor capable of handling strings
- */
-JSONDynamicNode.prototype._getStringEditor=function _getStringEditor() {
-  return new SimpleStringEditor(undefined);
-}
-
-/**
- * get the editor for editing numbers
- * @private
- * @return {IEditor} editor capable of handling numbers
- */
-JSONDynamicNode.prototype._getNumberEditor=function _getNumberEditor() {
-  return new JSONNumberEditor(undefined);
-}
-
-/**
- * get the editor for editing booleans
- * @private
- * @return {IEditor} editor capable of handling booleans
- */
-JSONDynamicNode.prototype._getBooleanEditor=function _getBooleanEditor() {
-  var dom={};
-  dom.buttons={
-    true:$("<span>",{
-      text:"true",
-      class:this._classPrefix+"boolEditButton",
-      click:function() {
-        if (!editor._readOnly) {
-          editor.setValue(true);
-        }
-      }
-    }),
-    false: $("<span>",{
-      text:"false",
-      class:this._classPrefix+"boolEditButton",
-      click:function() {
-        if (!editor._readOnly) {
-          editor.setValue(false);
-        }
-      }
-    })
-  };
-
-  dom.valField=$("<div>",{
-    html:[
-      dom.buttons.true,
-      dom.buttons.false
-    ]
-  });
-
-  var self=this;
-  var editor={
-    _value:true,
-    _readOnly:false,
-    getDom:function() {
-      return dom.valField;
-    },
-    setReadOnly:function(readOnly) {
-      editor._readOnly=readOnly;
-    },
-    setValue:function(value) {
-      editor._value=value;
-
-      if (editor._value) {
-        dom.buttons.true.addClass(self._classPrefix+"boolEditButtonActive");
-        dom.buttons.false.removeClass(self._classPrefix+"boolEditButtonActive");
-      } else {
-        dom.buttons.true.removeClass(self._classPrefix+"boolEditButtonActive");
-        dom.buttons.false.addClass(self._classPrefix+"boolEditButtonActive");
-      }
-    },
-    getValue:function() {
-      return editor._value;
-    }
-  };
-  return editor;
-}
-
-/**
- * get the editor for editing arrays
- * @private
- * @return {IEditor} editor capable of handling arrays
- */
-JSONDynamicNode.prototype._getArrayEditor=function _getArrayEditor() {
-  return new JSONArrayEditor(undefined);
-}
-
-/**
- * get the editor for editing objects
- * @private
- * @return {IEditor} editor capable of handling objects
- */
-JSONDynamicNode.prototype._getObjectEditor=function _getObjectEditor() {
-  return new JSONObjectEditor(undefined);
-}
-
-/**
- * get the editor for editing null values
- * @private
- * @return {IEditor} editor capable of handling null values
- */
-JSONDynamicNode.prototype._getNullEditor=function _getNullEditor() {
-  return new JSONNullEditor(undefined);
+  return this._provider.requestEditor(type);
 }
 
 /**
@@ -475,9 +355,12 @@ JSONDynamicNode.prototype.getDom=function getDom() {
  * @implements {IEditor}
  * @mixes {EventHandler}
  * @param {*} value initial value
+ * @param {IEditorProvider} provider a editor provider providing a json ("json") and text ("text") editor
  * @param {string} classPrefix css class prefix for dom elements
  */
-function JSONEditor(value,classPrefix) {
+function JSONEditor(value,provider,classPrefix) {
+  this._provider=provider;
+
   if (classPrefix===undefined) {
     this._classPrefix="";
   } else {
@@ -496,10 +379,10 @@ function JSONEditor(value,classPrefix) {
         }
       }),
       $("<span>",{
-        text:"plain",
+        text:"text",
         class:this._classPrefix+"typeSelOpt",
         click:function() {
-          self.setMode("plain");
+          self.setMode("text");
         }
       })
     ],
@@ -525,7 +408,7 @@ ClassHelper.$merge(JSONEditor,EventHandler);
  */
 JSONEditor.prototype.setValue=function setValue(value) {
   if (value===undefined) {
-    this._editor.setValue("");
+    this._editor.setValue(undefined);
     return;
   }
 
@@ -538,10 +421,10 @@ JSONEditor.prototype.setValue=function setValue(value) {
         data=JSON.parse(value);
         break;
       } catch(e) {
-        //can not display json mode -> plain mode
-        this.setMode("plain");
+        //can not display json mode -> text mode
+        this.setMode("text");
       }
-    case "plain":
+    case "text":
       data=value;
       break;
     default:
@@ -564,7 +447,7 @@ JSONEditor.prototype.getValue=function getValue() {
     case "json":
       value=JSON.stringify(data,undefined,"  ");
       break;
-    case "plain":
+    case "text":
       //data is a (user modified) string in json format
       value=data;
       break;
@@ -578,7 +461,7 @@ JSONEditor.prototype.getValue=function getValue() {
  * change the mode the editor uses to interpret data
  * accepted modes:
  * json: edits the json structure with json editors
- * plain: displays the json string in a text editor
+ * text: displays the json string in a text editor
  * @param {string} mode mode name
  * @throws {Error} If mode is none of the accepted modes
  */
@@ -589,7 +472,7 @@ JSONEditor.prototype.setMode=function setMode(mode) {
   var value;
   if (this._editor) {
     value=this.getValue();
-    this._editor.getDom().detach();
+    this._provider.disposeEditor(this._editor);
   }
 
   //reset selectors
@@ -600,11 +483,11 @@ JSONEditor.prototype.setMode=function setMode(mode) {
   //setup new editor
   switch (mode) {
     case "json":
-      this._editor=new JSONDynamicNode(undefined,this.classPrefix);
+      this._editor=this._provider.requestEditor("json");
       this._dom.selectors[0].addClass(this._classPrefix+"typeSelOptActive");
       break;
-    case "plain":
-      this._editor=new SimpleStringEditor(undefined,this.classPrefix);
+    case "text":
+      this._editor=this._provider.requestEditor("text");
       this._dom.selectors[1].addClass(this._classPrefix+"typeSelOptActive");
       break;
     default:

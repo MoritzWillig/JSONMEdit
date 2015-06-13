@@ -1,4 +1,49 @@
 
+testIEditorProvider=function(name,genInstance,acceptedConstants,rejecetedConstants) {
+  QUnit.module(name,{
+    beforeEach:function(assert) {
+      //create editorProvider
+      this.editorProvider=genInstance();
+    },
+    afterEach:function(assert) {
+    }
+  });
+
+  QUnit.test("interface",function(assert) {
+    var missing=Interface.$test(this.editorProvider,IEditorProvider);
+    assert.deepEqual(
+      missing,
+      [],
+      "IEditor interface is not implemented (missing: "+missing.join(", ")+")");
+  });
+
+  //teste correct creation and disposal of editors
+  for (var i in acceptedConstants) {
+    QUnit.test("create/dispose no throw",function(assert) {
+      var instance=this.editorProvider.requestEditor(acceptedConstants[i]);
+      this.editorProvider.disposeEditor(instance);
+
+      assert.ok(true,"did not throw");
+    });
+
+    QUnit.test("creates editor",function(assert) {
+      var instance=this.editorProvider.requestEditor(acceptedConstants[i]);
+
+      assert.equal(instance.$includes(IEditor),true,"instance does include IEditorProvider");
+
+      this.editorProvider.disposeEditor(instance);
+    });
+
+    QUnit.test("rejeceted constant throw",function(assert) {
+      assert.throws(function() {
+        this.editorProvider.requestEditor(rejecetedConstants);
+      },Error,"rejeceted constant did not throw");
+
+    });
+  }
+
+};
+
 testIEventHandler=function(name,genInstance,values) {
   QUnit.module(name,{
     beforeEach:function(assert) {
@@ -398,7 +443,10 @@ testIEditor("JSONEditor"        ,function() { return new JSONEditor();         }
 });
 */
 //operates with json objects
-testIEditor("JSONArrayEditor"   ,function() { return new JSONArrayEditor();   },{
+testIEditor("JSONArrayEditor"   ,function() {
+  var provider=new DefaultJSONEditorProvider();
+  return new JSONArrayEditor(undefined,provider);
+},{
   simple:{
     value:[],
     result:[]
@@ -409,7 +457,10 @@ testIEditor("JSONArrayEditor"   ,function() { return new JSONArrayEditor();   },
   }
 });
 
-testIEditor("JSONObjectEditor"  ,function() { return new JSONObjectEditor();   },{
+testIEditor("JSONObjectEditor"  ,function() {
+  var provider=new DefaultJSONEditorProvider();
+  return new JSONObjectEditor(undefined,provider);
+},{
   simple:{
     value:{},
     result:{}
@@ -420,7 +471,7 @@ testIEditor("JSONObjectEditor"  ,function() { return new JSONObjectEditor();   }
   }
 });
 
-testIEditor("JSONNullEditor"  ,function() { return new JSONNullEditor();   },{
+testIEditor("JSONNullEditor"  ,function() { return new JSONNullEditor(); },{
   simple:{
     value:null,
     result:null
@@ -431,7 +482,7 @@ testIEditor("JSONNullEditor"  ,function() { return new JSONNullEditor();   },{
   }
 });
 
-testIEditor("JSONNumberEditor"  ,function() { return new JSONNumberEditor();   },{
+testIEditor("JSONNumberEditor"  ,function() { return new JSONNumberEditor(); },{
   simple:{
     value:0,
     result:0
@@ -446,6 +497,21 @@ testIEditor("JSONNumberEditor"  ,function() { return new JSONNumberEditor();   }
   }
 });
 
+testIEditor("JSONBooleanEditor",function() { return new JSONBooleanEditor(); },{
+  simple:{
+    value:true,
+    result:true
+  },
+  complex:{
+    value:false,
+    result:false
+  },
+  false:{
+    value:true,
+    result:true
+  }
+});
+
 testIEditor("SimpleStringEditor",function() { return new SimpleStringEditor(); },{
   simple:{
     value:"",
@@ -457,7 +523,10 @@ testIEditor("SimpleStringEditor",function() { return new SimpleStringEditor(); }
   }
 });
 //operates with multiple json object types
-testIEditor("JSONDynamicNode"      ,function() { return new JSONDynamicNode();       },{
+testIEditor("JSONDynamicNode"      ,function() {
+  var provider=new DefaultJSONEditorProvider();
+  return new JSONDynamicNode(undefined,provider);
+},{
   simple:{
     value:{},
     result:{}
@@ -504,3 +573,9 @@ testIEditor("JSONDynamicNode"      ,function() { return new JSONDynamicNode();  
     result:null
   }
 });
+
+testIEditorProvider("DefaultJSONEditorProvider",function() { return new DefaultJSONEditorProvider(); },[
+  "string","number","null","array","object","boolean","json","text"
+],[
+  undefined,"undefined",null,"null","",0,1234,"abc"
+]);

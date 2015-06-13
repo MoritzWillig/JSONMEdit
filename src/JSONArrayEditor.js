@@ -5,10 +5,13 @@
  * @implements {IEditor}
  * @mixes {EventHandler}
  * @param {*} value initial value
+ * @param {IEditorProvider} provider a editor provider providing a json editor for "json"
  * @param {string} classPrefix css class prefix for dom elements
  */
-function JSONArrayEditor(value,classPrefix) {
+function JSONArrayEditor(value,provider,classPrefix) {
   EventHandler.apply(this,[this]);
+
+  this._provider=provider;
 
   if (classPrefix===undefined) {
     this._classPrefix="";
@@ -88,7 +91,9 @@ JSONArrayEditor.prototype.setValue=function setValue(value) {
  * @return {JQueryDOMNode}       jquery object representing an array field
  */
 JSONArrayEditor.prototype._createWrapper=function _createWrapper(value) {
-  var node=new JSONDynamicNode(value,this._classPrefix);
+  var node=this._provider.requestEditor("json");
+  node.setValue(value);
+
   //create node wrapper to insert new elements
   var self=this;
   var wrapperGUI=$("<div>",{
