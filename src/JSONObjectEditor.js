@@ -22,7 +22,7 @@ function JSONObjectEditor(value,provider,classPrefix) {
   var self=this;
   this._dom={
     root:$("<div>",{
-      class:this._classPrefix+"JSONObjectEditor"
+      "class":this._classPrefix+"JSONObjectEditor"
     }),
     insertName:$("<input>",{}),
     insertNew:$("<button>",{

@@ -1,9 +1,23 @@
-#JSON Edit
+#JSON M Edit
 A minimalistic JSON Editor.
 
-#Setup
+#Building & Include
 Copy the repo into a public accessible directory (marked as `{$PATH}` in the
-code below). And include the following files:
+code below).
+
+##Include to a web page
+JSONMEdit is build with the [Closure Compiler](https://developers.google.com/closure/compiler/) to cretate a single code file which can be included. Go to [resources/closureCompiler](resources/closureCompiler) and run the [closureCompiler.sh](resources/closureCompiler/closureCompiler.sh) to generate a minified version of JSONMEdit. The minified file is then placed under [libs/JSONMedit.js](libs/JSONMedit.js) and can be included as follows:
+```html
+<!-- if you already include query you can skip this include -->
+<script src="{$PATH}/libs/jQuery_v1.11.1.js"></script>
+
+<!-- include JSONMEdit -->
+<script src="{$PATH}/libs/JSONMedit.js"></script>
+<link rel="stylesheet" type="text/css" href="{$PATH}/resources/css/jsonEditor.css">
+```
+
+##Debugging & Developement
+For debugging or developing include the uncompressed code into your html:
 ```html
 <!-- if you already include query you can skip this include -->
 <script src="{$PATH}/libs/jQuery_v1.11.1.js"></script>
@@ -27,6 +41,8 @@ code below). And include the following files:
 
 <link rel="stylesheet" type="text/css" href="{$PATH}/resources/css/jsonEditor.css">
 ```
+###Generating documentation
+Documentation is generated with [JSDoc](https://github.com/jsdoc3/jsdoc. Change to [docu/](docu/) and run [docu/jsDocGen.sh](docu/jsDocGen.sh) to create a new documentation of the code. (The used jsdoc template does not include any timestamps or version numbers. Therefore the documetation should stay the same if the the code does not change and only a changed documentation in code is added to git commits)
 
 #Usage
 Every Editor included, implements the IEditor interface and therefore can be

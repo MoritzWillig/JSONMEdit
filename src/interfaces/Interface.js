@@ -43,25 +43,30 @@ Interface.IfcFunc=function IfcFunc(func,optional) {
   return func;
 }
 
-/**
- * include an interface into this interface
- * @param  {Interface} interface interface to include
- */
+function isInstanceOf(inst,type) {
+  return (inst instanceof type);
+}
+
 Object.defineProperty(Interface.prototype,"$include",{
   configurable:false,
   enumerable:false,
-  value:function $include(interface) {
-    if (!(interface instanceof Interface.constructor)) {
+  /**
+   * @this {Interface}
+   * include an interface into this interface
+   * @param  {Interface} interface interface to include
+   */
+  value:function $include(iinterface) {
+    if ((isInstanceOf(iinterface,Interface.constructor))==false) {
       throw new Error("trying to include a non interface object");
     }
 
-    for (var i in interface.prototype) {
+    for (var i in iinterface.prototype) {
       //test if the attribute already exists
       if (i in this) {
         throw new Error("attribute already exists");
       }
 
-      this[i]=interface.prototype[i];
+      this[i]=iinterface.prototype[i];
     }
 
     /* we do not need to remove duplicates. because, on other than
@@ -69,30 +74,32 @@ Object.defineProperty(Interface.prototype,"$include",{
      * in the code above.
      * TODO: check for empty interfaces
      */
-    Array.prototype.push.apply(this.___interfaces,interface.___interfaces);
+    Array.prototype.push.apply(this.___interfaces,iinterface.___interfaces);
   }
 });
 
-/**
- * check if an interface is included into the current interface
- * @param  {Interface} interface interface to check
- */
 Object.defineProperty(Interface.prototype,"$includes",{
   configurable:false,
   enumerable:false,
-  value:function $includes(interface) {
-    return (this.___interfaces.indexOf(interface.prototype)!=-1);
+  /**
+   * @this {Interface}
+   * check if an interface is included into the current interface
+   * @param  {Interface} interface interface to check
+   */
+  value:function $includes(iinterface) {
+    return (this.___interfaces.indexOf(iinterface.prototype)!=-1);
   }
 });
 
-/**
- * checks if a property was introduced by an interface
- * @param  {string} name name of the property
- * @return {Boolean}      true if an interface introduced the property, false otherwise
- */
 Object.defineProperty(Interface.prototype,"$fromInterface",{
   configurable:false,
   enumerable:false,
+  /**
+   * @this {Interface}
+   * checks if a property was introduced by an interface
+   * @param  {string} name name of the property
+   * @return {Boolean}      true if an interface introduced the property, false otherwise
+   */
   value:function $fromInterface(name) {
     //interface functions are required to be passed throught IfcFunc
     return ((this[name]) && (this[name].___ifcFunc));
@@ -114,24 +121,25 @@ Object.defineProperty(Interface.prototype,"$fromInterface",{
   }
 });
 
-/**
- * test if every required method of an interface is implemented
- * @param  {Interface} interfaceUUTInst interface to test
- * @param  {Interface}  interface interface to compare to
- * @return {Array}              array containing all methods that are missing
- */
 Object.defineProperty(Interface,"$test",{
   configurable:false,
   enumerable:false,
-  value:function $test(interfaceUUTInst, interface) {
+  /**
+   * @this {Interface}
+   * test if every required method of an interface is implemented
+   * @param  {Interface} interfaceUUTInst interface to test
+   * @param  {Interface}  interface interface to compare to
+   * @return {Array}              array containing all methods that are missing
+   */
+  value:function $test(interfaceUUTInst, iinterface) {
     var notImplemented=[];
 
-    for (var i in interface.prototype) {
+    for (var i in iinterface.prototype) {
       //check if the method was overwritten
-      if (interfaceUUTInst[i]===interface.prototype[i]) {
+      if (interfaceUUTInst[i]===iinterface.prototype[i]) {
         //check if the method is optional -> body is empty -> no error
         try {
-          interface.prototype[i]();
+          iinterface.prototype[i]();
         } catch(e) {
           if (e instanceof InterfaceError) {
             notImplemented.push(i);
@@ -151,18 +159,19 @@ Object.defineProperty(Interface,"$test",{
  */
 function ClassHelper() {}
 
-/**
- * merges an class into another
- *
- * notice that this does merging does include the constructor call of the included class
- * to do this call NAMEOFINCLUDEDCLASS.apply(this);
- * @param  {class} to         class to merge to
- * @param  {class} from       class to merge into the to class
- * @param  {boolean} overwrite wether or not existing function should be overwritten (interface placeholder function are always overwritten)
- */
 Object.defineProperty(ClassHelper,"$merge",{
   configurable:false,
   enumerable:false,
+  /**
+   * @this {ClassHelper}
+   * merges an class into another
+   *
+   * notice that this does merging does include the constructor call of the included class
+   * to do this call NAMEOFINCLUDEDCLASS.apply(this);
+   * @param  {class} to         class to merge to
+   * @param  {class} from       class to merge into the to class
+   * @param  {boolean} overwrite wether or not existing function should be overwritten (interface placeholder function are always overwritten)
+   */
   value:function $merge(to,from,overwrite) {
     if (overwrite==undefined) {
       overwrite=false;

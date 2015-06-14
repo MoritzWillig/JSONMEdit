@@ -20,18 +20,18 @@ function JSONBooleanEditor(value,classPrefix) {
 
   this._dom={};
   this._dom.buttons={
-    true:$("<span>",{
+    "true":$("<span>",{
       text:"true",
-      class:this._classPrefix+"boolEditButton",
+      "class":this._classPrefix+"boolEditButton",
       click:function() {
         if (!self._readOnly) {
           self.setValue(true);
         }
       }
     }),
-    false: $("<span>",{
+    "false": $("<span>",{
       text:"false",
-      class:this._classPrefix+"boolEditButton",
+      "class":this._classPrefix+"boolEditButton",
       click:function() {
         if (!self._readOnly) {
           self.setValue(false);
@@ -42,8 +42,8 @@ function JSONBooleanEditor(value,classPrefix) {
 
   this._dom.valField=$("<div>",{
     html:[
-      this._dom.buttons.true,
-      this._dom.buttons.false
+      this._dom.buttons["true"],
+      this._dom.buttons["false"]
     ]
   });
 
@@ -66,8 +66,8 @@ JSONBooleanEditor.prototype.setValue=function setValue(value) {
     this.setReadOnly(true);
     this._value=value;
 
-    this._dom.buttons.true.removeClass(this._classPrefix+"boolEditButtonActive");
-    this._dom.buttons.false.addClass(this._classPrefix+"boolEditButtonActive");
+    this._dom.buttons["true"].removeClass(this._classPrefix+"boolEditButtonActive");
+    this._dom.buttons["false"].addClass(this._classPrefix+"boolEditButtonActive");
   } else {
     if (typeof value!="boolean") {
       throw new Error("value is no boolean");
@@ -76,11 +76,11 @@ JSONBooleanEditor.prototype.setValue=function setValue(value) {
     this._value=value;
 
     if (this._value) {
-      this._dom.buttons.true.addClass(this._classPrefix+"boolEditButtonActive");
-      this._dom.buttons.false.removeClass(this._classPrefix+"boolEditButtonActive");
+      this._dom.buttons["true"].addClass(this._classPrefix+"boolEditButtonActive");
+      this._dom.buttons["false"].removeClass(this._classPrefix+"boolEditButtonActive");
     } else {
-      this._dom.buttons.true.removeClass(this._classPrefix+"boolEditButtonActive");
-      this._dom.buttons.false.addClass(this._classPrefix+"boolEditButtonActive");
+      this._dom.buttons["true"].removeClass(this._classPrefix+"boolEditButtonActive");
+      this._dom.buttons["false"].addClass(this._classPrefix+"boolEditButtonActive");
     }
     this.setReadOnly(false);
   }

@@ -18,7 +18,7 @@ function SimpleStringEditor(value,classPrefix) {
 
   this._dom={
     valField:$("<textarea>",{
-      class:this._classPrefix+"SimpleStringEditor"
+      "class":this._classPrefix+"SimpleStringEditor"
     })
   };
 

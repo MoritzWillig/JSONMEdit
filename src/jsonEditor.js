@@ -6,12 +6,12 @@ JSONEditorHelper={
    * @type {Object}
    */
   _typeDefaults:{
-    string:"",
-    number:0,
-    boolean:true,
-    object:{},
-    array:[],
-    null:null
+    "string":"",
+    "number":0,
+    "boolean":true,
+    "object":{},
+    "array":[],
+    "null":null
   },
 
   /**
@@ -220,7 +220,7 @@ JSONDynamicNode.prototype._createWrapper=function _createWrapper() {
       this.dom._types.dom.frame,
       dom.nodes
     ],
-    class:this._classPrefix+"JSONDynamicNode",
+    "class":this._classPrefix+"JSONDynamicNode"
   });
 
   return {
@@ -251,37 +251,37 @@ JSONDynamicNode.prototype._createTypeSelector=function _createTypeSelector() {
 
   var dom={
     stringSel:$("<span>",{
-      class:this._classPrefix+"typeSelOpt",
-      text:"string",
+      "class":this._classPrefix+"typeSelOpt",
+      text:"string"
     }).click(function() {
       self._setTypeDefault("string");
     }),
     numberSel:$("<span>",{
-      class:this._classPrefix+"typeSelOpt",
+      "class":this._classPrefix+"typeSelOpt",
       text:"number"
     }).click(function() {
       self._setTypeDefault("number");
     }),
     booleanSel:$("<span>",{
-      class:this._classPrefix+"typeSelOpt",
+      "class":this._classPrefix+"typeSelOpt",
       text:"bool"
     }).click(function() {
       self._setTypeDefault("boolean");
     }),
     objectSel:$("<span>",{
-      class:this._classPrefix+"typeSelOpt",
+      "class":this._classPrefix+"typeSelOpt",
       text:"object"
     }).click(function() {
       self._setTypeDefault("object");
     }),
     arraySel:$("<span>",{
-      class:this._classPrefix+"typeSelOpt",
+      "class":this._classPrefix+"typeSelOpt",
       text:"array"
     }).click(function() {
       self._setTypeDefault("array");
     }),
     nullSel:$("<span>",{
-      class:this._classPrefix+"typeSelOpt",
+      "class":this._classPrefix+"typeSelOpt",
       text:"null"
     }).click(function() {
       self._setTypeDefault("null");
@@ -370,29 +370,29 @@ function JSONEditor(value,provider,classPrefix) {
   //setup gui
   var self=this;
   this._dom={
-    selectors:[
+    "selectors":[
       $("<span>",{
         text:"json",
-        class:this._classPrefix+"typeSelOpt",
+        "class":this._classPrefix+"typeSelOpt",
         click:function() {
           self.setMode("json");
         }
       }),
       $("<span>",{
         text:"text",
-        class:this._classPrefix+"typeSelOpt",
+        "class":this._classPrefix+"typeSelOpt",
         click:function() {
           self.setMode("text");
         }
       })
     ],
-    switch:$("<div>",{}),
-    root:$("<div>",{
-      class:this._classPrefix+"JSONEditor",
+    "switch":$("<div>",{}),
+    "root":$("<div>",{
+      "class":this._classPrefix+"JSONEditor"
     })
   }
-  this._dom.switch.append(this._dom.selectors);
-  this._dom.root.append(this._dom.switch);
+  this._dom["switch"].append(this._dom.selectors);
+  this._dom.root.append(this._dom["switch"]);
 
   //setup editor
   this.setMode("json");

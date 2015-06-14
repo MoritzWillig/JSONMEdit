@@ -23,14 +23,14 @@ function JSONArrayEditor(value,provider,classPrefix) {
   this._dom={
     root:$("<div>",{}),
     insertLast:$("<button>",{
-      class:this._classPrefix+"insElement",
+      "class":this._classPrefix+"insElement",
       text:"+",
       click:function() {
         self._addNodeLast();
       }
     }),
     nodes:$("<div>",{
-      class:this._classPrefix+"JSONArrayEditor"
+      "class":this._classPrefix+"JSONArrayEditor"
     })
   };
 
@@ -99,14 +99,14 @@ JSONArrayEditor.prototype._createWrapper=function _createWrapper(value) {
   var wrapperGUI=$("<div>",{
     html:[
       $("<button>",{
-        class:this._classPrefix+"insElement",
+        "class":this._classPrefix+"insElement",
         text:"+",
         click:function() {
           self._addNode(wrapper,node);
         }
       }),
       $("<button>",{
-        class:this._classPrefix+"delElement",
+        "class":this._classPrefix+"delElement",
         text:"-",
         click:function() {
           self._removeNode(wrapper);

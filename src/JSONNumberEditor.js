@@ -19,7 +19,7 @@ function JSONNumberEditor(value,classPrefix) {
   var self=this;
   this._dom={
     valField:$("<textarea>",{
-      class:this._classPrefix+"JSONNumberEditor",
+      "class":this._classPrefix+"JSONNumberEditor"
     }).change(function() {
       self._checkTextarea();
     })
