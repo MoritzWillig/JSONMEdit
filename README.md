@@ -42,7 +42,7 @@ For debugging or developing include the uncompressed code into your html:
 <link rel="stylesheet" type="text/css" href="{$PATH}/resources/css/jsonEditor.css">
 ```
 ###Generating documentation
-Documentation is generated with [JSDoc](https://github.com/jsdoc3/jsdoc. Change to [docu/](docu/) and run [docu/jsDocGen.sh](docu/jsDocGen.sh) to create a new documentation of the code. (The used jsdoc template does not include any timestamps or version numbers. Therefore the documetation should stay the same if the the code does not change and only a changed documentation in code is added to git commits)
+Documentation is generated with [JSDoc](https://github.com/jsdoc3/jsdoc). Change to [docu/](docu/) and run [docu/jsDocGen.sh](docu/jsDocGen.sh) to create a new documentation of the code. (The used jsdoc template does not include any timestamps or version numbers. Therefore the documetation should stay the same if the the code does not change and only a changed documentation in code is added to git commits)
 
 #Usage
 Every Editor included, implements the IEditor interface and therefore can be

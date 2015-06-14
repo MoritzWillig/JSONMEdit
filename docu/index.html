@@ -84,7 +84,8 @@ code below).</p>
 &lt;script src=&quot;{$PATH}/src/jsonEditor.js&quot;>&lt;/script>
 &lt;script src=&quot;{$PATH}/src/DefaultJSONEditorProvider.js&quot;>&lt;/script>
 
-&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;{$PATH}/resources/css/jsonEditor.css&quot;></code></pre><h1>Usage</h1><p>Every Editor included, implements the IEditor interface and therefore can be
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;{$PATH}/resources/css/jsonEditor.css&quot;></code></pre><h3>Generating documentation</h3><p>Documentation is generated with <a href="https://github.com/jsdoc3/jsdoc">JSDoc</a>. Change to <a href="docu/">docu/</a> and run <a href="docu/jsDocGen.sh">docu/jsDocGen.sh</a> to create a new documentation of the code. (The used jsdoc template does not include any timestamps or version numbers. Therefore the documetation should stay the same if the the code does not change and only a changed documentation in code is added to git commits)</p>
+<h1>Usage</h1><p>Every Editor included, implements the IEditor interface and therefore can be
 used on its own to edit their specific JSON type.</p>
 <h2>Dynamic JSON Editor</h2><p>The <code>JSONDynamicNode</code>-Editor dynamically chooses the right Editor for the JSON
 value given. Be carefull when passing arbitrary objects (especially if not
