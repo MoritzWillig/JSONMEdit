@@ -178,7 +178,7 @@ JSONDynamicNode.prototype.setValue=function setValue(value) {
     this.setReadOnly(false);
   }
 
-  this.trigger(this);
+  this.notify(this);
 }
 
 /**
@@ -433,7 +433,7 @@ JSONEditor.prototype.setValue=function setValue(value) {
 
   this._editor.setValue(data);
 
-  this.trigger(this);
+  this.notify(this);
 }
 
 /**

@@ -47,6 +47,6 @@ IEventHandler.prototype.isRegistered=Interface.IfcFunc(function(handler) {
  * notify all registered listeners
  * @param {...Mixed} data data to be passed to the listeners
  */
-IEventHandler.prototype.trigger=Interface.IfcFunc(function() {
+IEventHandler.prototype.notify=Interface.IfcFunc(function() {
   throw new InterfaceError("not implemented");
 });

@@ -33,13 +33,13 @@ JSONNullEditor.prototype.setValue=function setValue(value) {
 
   if (this._undefined) {
     this.setReadOnly(true);
-    this.trigger(this);
+    this.notify(this);
   } else {
     if (value!==null) {
       this.setValue(undefined);
     } else {
       this.setReadOnly(false);
-      this.trigger(this);
+      this.notify(this);
     }
   }
 }

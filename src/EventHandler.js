@@ -1,3 +1,9 @@
+//FIXME move to classes
+
+/**
+ * @requires IEventHandler
+ */
+
 /**
  * Create an observer pattern subject to notify functions if the handler is triggered
  * @class
@@ -6,7 +12,9 @@
  */
 function EventHandler(owner) {
   this._listeners=[];
+  this._internal=[];
   this._owner=owner;
+  this._locked=false;
 }
 
 EventHandler.prototype=new IEventHandler();
@@ -68,13 +76,37 @@ EventHandler.prototype.clear=function clear() {
 }
 
 /**
+ * recive an array of internal handlers which are not affected by other EventHandler operations
+ * @return {Array.<function>} list representing internal handlers
+ */
+EventHandler.prototype.getInternalHandlers=function getInternalHandlers() {
+  return this._internal;
+}
+
+/**
  * notify all registered listeners
  * @param {...*} data data to be passed to the listeners
  */
-EventHandler.prototype.trigger=function trigger() {
+EventHandler.prototype.notify=function notify() {
+  if (this._locked) { return; }
+
+  for (var i in this._internal) {
+    var l=this._internal[i];
+
+    l.apply(this._owner,arguments);
+  }
+
   for (var i in this._listeners) {
     var l=this._listeners[i];
 
     l.apply(this._owner,arguments);
   }
+}
+
+/**
+ * block the EventHandler from notifing registered handler
+ * @param {boolean} locked true to lock the handler, false to unlock the handler
+ */
+EventHandler.prototype.setLocked=function setLocked(locked) {
+  this._locked=locked;
 }

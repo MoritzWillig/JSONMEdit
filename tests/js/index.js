@@ -51,7 +51,7 @@ testIEventHandler=function(name,genInstance,values) {
       this.eventHandler=genInstance();
 
       this.registeredEvents={};
-      this.triggerCt=0;
+      this.notifyCt=0;
 
       //create some handlers
       this.handlers=[];
@@ -61,7 +61,7 @@ testIEventHandler=function(name,genInstance,values) {
 
         var handler=(function(n) {
           return function handler() {
-            self.triggerCt++;
+            self.notifyCt++;
             var argsArr=[];
             for (var i=0; i<arguments.length; i++) {
               argsArr.push(arguments[i]);
@@ -224,15 +224,15 @@ testIEventHandler=function(name,genInstance,values) {
     }
   });
 
-  QUnit.test("trigger",function(assert) {
+  QUnit.test("notify",function(assert) {
     this.registerAll();
 
     var testObj={1:"a","test":"x","test2":null,"test3":[1,2,3]};
     var testArr=[1,"a",null,{"a":"b"},[1,2,3]];
-    this.eventHandler.trigger(1,null,testObj,testArr);
+    this.eventHandler.notify(1,null,testObj,testArr);
 
     assert.equal(
-      this.triggerCt,
+      this.notifyCt,
       this.handlers.length,
       "amount of registered events differs"
       );
@@ -287,27 +287,27 @@ testIEventHandler=function(name,genInstance,values) {
     },Error,"unregistering an unregistered handler did not throw");
   });
 
-  /* test the given functions for (not) triggering the event handler
+  /* test the given functions for (not) notifying the event handler
    */
   for (var i in values) {
     var val=values[i];
     (function(val) {
-      QUnit.test("trigger test_"+i, function (assert) {
+      QUnit.test("notify test_"+i, function (assert) {
         this.registerAll();
 
         val.setup(this.eventHandler,function reset() {
-          //function reset trigger counter
-          this.triggerCt=0;
+          //function reset notify counter
+          this.notifyCt=0;
           for (var i=0; i<5; i++) {
             this.registeredEvents[i]=[];
           }
-        }); // does (not) call trigger
+        }); // does (not) call notify
 
-        assert.equal(((!val.shouldTrigger) && (this.triggerCt!=0)),false,"registered event which should not have been triggered");
-        assert.equal(((val.shouldTrigger) && (this.triggerCt!=5)),false,"registered no event which should have been occured");
+        assert.equal(((!val.shouldNotify) && (this.notifyCt!=0)),false,"registered event which should not have been notifyed");
+        assert.equal(((val.shouldNotify) && (this.notifyCt!=5)),false,"registered no event which should have been occured");
 
         if (val.post) {
-          val.post(this.registeredEvents,this.triggerCt);
+          val.post(this.registeredEvents,this.notifyCt);
         }
       });
     })(val);
@@ -326,14 +326,14 @@ testIEditor=function(name,genInstance,values) {
       setup:function(instance,reset) {
         instance.setValue(undefined);
       },
-      shouldTrigger:true
+      shouldNotify:true
     },
     setReadOnly:{
       setup:function(instance,reset) {
         instance.setReadOnly(false);
         instance.setReadOnly(true);
       },
-      shouldTrigger:false
+      shouldNotify:false
     }
   };
 
@@ -344,7 +344,7 @@ testIEditor=function(name,genInstance,values) {
         setup:function(instance,reset) {
           instance.setValue(values[name].value);
         },
-        shouldTrigger:true
+        shouldNotify:true
       };
     })(i);
   }
@@ -414,7 +414,7 @@ testIEditor=function(name,genInstance,values) {
 
 
 testIEventHandler("EventHandler",function() { return new EventHandler(); },{
-  //no other functions to test trigger with
+  //no other functions to test notify with
 });
 
 

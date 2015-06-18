@@ -81,7 +81,7 @@ JSONArrayEditor.prototype.setValue=function setValue(value) {
     this.setReadOnly(false);
   }
 
-  this.trigger(this);
+  this.notify(this);
 }
 
 /**
