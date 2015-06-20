@@ -3,3 +3,6 @@ resources/closureCompiler/closureCompiler.sh
 
 #output location of the closure compiled code
 libs/jsonMEdit.js
+
+#the documentation should always be rebuild by the users to guarantee an up-to-date document
+docu/

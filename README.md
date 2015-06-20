@@ -2,11 +2,11 @@
 A minimalistic JSON Editor.
 
 #Building & Include
-Copy the repo into a public accessible directory (marked as `{$PATH}` in the
+Clone the repo into a public accessible directory (marked as `{$PATH}` in the
 code below).
 
 ##Include to a web page
-JSONMEdit is build with the [Closure Compiler](https://developers.google.com/closure/compiler/) to cretate a single code file which can be included. Go to [resources/closureCompiler](resources/closureCompiler) and run the [closureCompiler.sh](resources/closureCompiler/closureCompiler.sh) to generate a minified version of JSONMEdit. The minified file is then placed under [libs/JSONMedit.js](libs/JSONMedit.js) and can be included as follows:
+JSONMEdit is build with the [Closure Compiler](https://developers.google.com/closure/compiler/) to create a single code file which can be included. ``cd`` to [resources/closureCompiler](resources/closureCompiler) and run the [closureCompiler.sh](resources/closureCompiler/closureCompiler.sh) to generate a minified version of JSONMEdit. The minified file is then placed under [libs/JSONMedit.js](libs/JSONMedit.js) and can be included as follows:
 ```html
 <!-- if you already include query you can skip this include -->
 <script src="{$PATH}/libs/jQuery_v1.11.1.js"></script>
@@ -22,30 +22,21 @@ For debugging or developing include the uncompressed code into your html:
 <!-- if you already include query you can skip this include -->
 <script src="{$PATH}/libs/jQuery_v1.11.1.js"></script>
 
-<!-- include interfaces -->
+<!-- include code -->
 <script src="{$PATH}/src/interfaces/Interface.js"></script>
 <script src="{$PATH}/src/interfaces/IEventHandler.js"></script>
-<script src="{$PATH}/src/interfaces/IEditor.js"></script>
-<script src="{$PATH}/src/interfaces/IEditorProvider.js"></script>
+...
 
-<!-- include code -->
-<script src="{$PATH}/src/EventHandler.js"></script>
-<script src="{$PATH}/src/JSONNullEditor.js"></script>
-<script src="{$PATH}/src/JSONNumberEditor.js"></script>
-<script src="{$PATH}/src/JSONBooleanEditor.js"></script>
-<script src="{$PATH}/src/JSONObjectEditor.js"></script>
-<script src="{$PATH}/src/JSONArrayEditor.js"></script>
-<script src="{$PATH}/src/SimpleStringEditor.js"></script>
-<script src="{$PATH}/src/jsonEditor.js"></script>
-<script src="{$PATH}/src/DefaultJSONEditorProvider.js"></script>
-
+<!-- include css -->
 <link rel="stylesheet" type="text/css" href="{$PATH}/resources/css/jsonEditor.css">
 ```
-###Generating documentation
-Documentation is generated with [JSDoc](https://github.com/jsdoc3/jsdoc). Change to [docu/](docu/) and run [docu/jsDocGen.sh](docu/jsDocGen.sh) to create a new documentation of the code. (The used jsdoc template does not include any timestamps or version numbers. Therefore the documetation should stay the same if the the code does not change and only a changed documentation in code is added to git commits)
+The full list and order of necessary code files to include can be found under [resources/closureCompiler/closureCompiler.sh](resources/closureCompiler/closureCompiler.sh)
+
+##Generating documentation
+Documentation is generated with [JSDoc](https://github.com/jsdoc3/jsdoc). Change to [docu/](docu/) and run [docu/jsDocGen.sh](docu/jsDocGen.sh) to create a new documentation of the code.
 
 #Usage
-Every Editor included, implements the IEditor interface and therefore can be
+Every Editor included implements the IEditor interface and therefore can be
 used on its own to edit their specific JSON type.
 
 ##Dynamic JSON Editor

@@ -43,6 +43,7 @@ Interface.IfcFunc=function IfcFunc(func,optional) {
   return func;
 }
 
+//closure compiler throws errors if this is inlined in the code below
 function isInstanceOf(inst,type) {
   return (inst instanceof type);
 }
@@ -51,9 +52,10 @@ Object.defineProperty(Interface.prototype,"$include",{
   configurable:false,
   enumerable:false,
   /**
-   * @this {Interface}
-   * include an interface into this interface
-   * @param  {Interface} interface interface to include
+   * @function
+   * @name Interface#$include
+   * @description include an interface into this interface
+   * @param  {Interface} iinterface interface to include
    */
   value:function $include(iinterface) {
     if ((isInstanceOf(iinterface,Interface.constructor))==false) {
@@ -82,9 +84,10 @@ Object.defineProperty(Interface.prototype,"$includes",{
   configurable:false,
   enumerable:false,
   /**
-   * @this {Interface}
-   * check if an interface is included into the current interface
-   * @param  {Interface} interface interface to check
+   * @function
+   * @name Interface#$includes
+   * @description check if an interface is included into the current interface
+   * @param  {Interface} iinterface interface to check
    */
   value:function $includes(iinterface) {
     return (this.___interfaces.indexOf(iinterface.prototype)!=-1);
@@ -95,8 +98,9 @@ Object.defineProperty(Interface.prototype,"$fromInterface",{
   configurable:false,
   enumerable:false,
   /**
-   * @this {Interface}
-   * checks if a property was introduced by an interface
+   * @function
+   * @name Interface#$fromInterface
+   * @description checks if a property was introduced by an interface
    * @param  {string} name name of the property
    * @return {Boolean}      true if an interface introduced the property, false otherwise
    */
@@ -125,10 +129,11 @@ Object.defineProperty(Interface,"$test",{
   configurable:false,
   enumerable:false,
   /**
-   * @this {Interface}
-   * test if every required method of an interface is implemented
+   * @function
+   * @name Interface#$test
+   * @description test if every required method of an interface is implemented
    * @param  {Interface} interfaceUUTInst interface to test
-   * @param  {Interface}  interface interface to compare to
+   * @param  {Interface}  iinterface interface to compare to
    * @return {Array}              array containing all methods that are missing
    */
   value:function $test(interfaceUUTInst, iinterface) {
@@ -155,7 +160,8 @@ Object.defineProperty(Interface,"$test",{
 });
 
 /**
- * helper for merging classes derived from interfaces
+ * @class helper for merging classes derived from interfaces
+ * @static
  */
 function ClassHelper() {}
 
@@ -163,8 +169,9 @@ Object.defineProperty(ClassHelper,"$merge",{
   configurable:false,
   enumerable:false,
   /**
-   * @this {ClassHelper}
-   * merges an class into another
+   * @function
+   * @name ClassHelper#$merge
+   * @description merges an class into another
    *
    * notice that this does merging does include the constructor call of the included class
    * to do this call NAMEOFINCLUDEDCLASS.apply(this);

@@ -28,4 +28,16 @@ $("body").ready(function() {
   //set value
   var test_str=JSON.stringify(test_obj);
   editor.setValue(test_str);
+
+  //FIXME move to separate page
+  $("#content").append("<hr>");
+
+  var listBox=new ListBox();
+  //listBox.setMode("dropDown");
+  listBox.push("test");
+  listBox.push("hello");
+  listBox.push("welt");
+  $("#content").append(listBox.getDom().css("height","150px"));
+
+  listBox.setSelection([0,2]);
 });

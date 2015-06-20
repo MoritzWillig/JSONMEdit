@@ -1,4 +1,3 @@
-//FIXME move to classes
 
 /**
  * @requires IEventHandler

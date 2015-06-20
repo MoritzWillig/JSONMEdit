@@ -9,4 +9,28 @@ if  [ -z ${CC_PATH+x} ]; then
   exit 1
 fi
 
-java -jar $CC_PATH --js_output_file=../../libs/jsonMEdit.js --compilation_level=SIMPLE ../../src/interfaces/Interface.js ../../src/interfaces/IEventHandler.js ../../src/interfaces/IEditor.js ../../src/interfaces/IEditorProvider.js ../../src/EventHandler.js ../../src/JSONNullEditor.js ../../src/JSONNumberEditor.js ../../src/JSONBooleanEditor.js ../../src/JSONObjectEditor.js ../../src/JSONArrayEditor.js ../../src/SimpleStringEditor.js ../../src/jsonEditor.js ../../src/DefaultJSONEditorProvider.js
+java -jar $CC_PATH \
+  --js_output_file=../../libs/jsonMEdit.js \
+  --compilation_level=SIMPLE \
+  ../../src/interfaces/Interface.js \
+  ../../src/interfaces/IEventHandler.js \
+  ../../src/interfaces/IList.js \
+  ../../src/interfaces/ISelector.js \
+  ../../src/interfaces/IEditor.js \
+  ../../src/interfaces/IEditorProvider.js \
+  \
+  ../../src/classes/EventHandler.js \
+  ../../src/classes/List.js \
+  \
+  ../../src/EventHandler.js \
+  ../../src/ListBox.js\
+  \
+  ../../src/JSONNullEditor.js \
+  ../../src/JSONNumberEditor.js \
+  ../../src/JSONBooleanEditor.js \
+  ../../src/JSONObjectEditor.js \
+  ../../src/JSONArrayEditor.js \
+  ../../src/SimpleStringEditor.js \
+  ../../src/jsonEditor.js \
+  ../../src/DefaultJSONEditorProvider.js
+
