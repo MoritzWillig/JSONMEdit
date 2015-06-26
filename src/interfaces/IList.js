@@ -151,7 +151,15 @@ IList.prototype.toArray=Interface.IfcFunc(function toArray() {
  * @param  {integer} index   index to start inserting the array
  * @param  {Array.<*>} values  array to insert into the list
  */
-IList.prototype.insertRange=Interface.IfcFunc(function insertRange(index,values) {
+IList.prototype.insertArray=Interface.IfcFunc(function insertRange(index,values) {
+  throw new InterfaceError("not implemented");
+});
+
+/**
+ * append an array to the curent list
+ * @param {Array.<*>} values array to append
+ */
+IList.prototype.addArray=IList.prototype.pushArray=IList.prototype.enqueueArray=Interface.IfcFunc(function addArray(value) {
   throw new InterfaceError("not implemented");
 });
 
@@ -161,6 +169,14 @@ IList.prototype.insertRange=Interface.IfcFunc(function insertRange(index,values)
  * @param  {IList} values  list to insert into this list
  */
 IList.prototype.insertList=Interface.IfcFunc(function insertList(index,list) {
+  throw new InterfaceError("not implemented");
+});
+
+/**
+ * append an list to the current list
+ * @param {IList} values list to append
+ */
+IList.prototype.addList=IList.prototype.pushList=IList.prototype.enqueueList=Interface.IfcFunc(function addList(value) {
   throw new InterfaceError("not implemented");
 });
 

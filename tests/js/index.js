@@ -307,7 +307,7 @@ testIEventHandler=function(name,genInstance,values) {
         assert.equal(((val.shouldNotify) && (this.notifyCt!=5)),false,"registered no event which should have been occured");
 
         if (val.post) {
-          val.post(this.registeredEvents,this.notifyCt);
+          val.post(this.eventHandler,this.registeredEvents,this.notifyCt);
         }
       });
     })(val);

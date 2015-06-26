@@ -110,7 +110,7 @@ List.prototype._doInsert=function _doInsert(index,value) {
  * @return {*}       removed item
  */
 List.prototype._doDelete=function _doDelete(index) {
-  if ((0>index) || (index>this._values.length)) {
+  if ((0>index) || (index>=this._values.length)) {
     throw new Error("index out of range");
   }
 
@@ -123,7 +123,7 @@ List.prototype._doDelete=function _doDelete(index) {
  * @return {*}       value value at index position
  */
 List.prototype.getItem=function getItem(index) {
-  if ((0>index) || (index>this._values.length)) {
+  if ((0>index) || (index>=this._values.length)) {
     throw new Error("index out of range");
   }
 
@@ -136,6 +136,10 @@ List.prototype.getItem=function getItem(index) {
  * @param {*} value new item value
  */
 List.prototype.setItem=function setItem(index,value) {
+  if ((0>index) || (index>=this._values.length)) {
+    throw new Error("index out of range");
+  }
+
   var old=this._values[index];
 
   this._values[index]=value;
@@ -237,30 +241,18 @@ List.prototype.unshift=function unshift(value) {
   return this.getSize();
 };
 
-
-/**
- * remove the first item from the list
- * @return {*}   removed item
- */
-List.prototype.shift=function shift() {
-  var item=this._values.shift();
-  this.notify("delete",0,item);
-
-  return item;
-};
-
 /**
  * move an item to another index
  * @param  {integer} index1  index of the item to move
  * @param  {integer} index2  index to move the item to
  */
 List.prototype.move=function move(index1,index2) {
-  var item=this.delete(index1);
-
-  if (index1<index2) {
-    index2--;
+  if (((index1<0) || (index1>=this._values.length)) ||
+      ((index2<0) || (index2>=this._values.length))) {
+    throw new Error("index out of bounds");
   }
 
+  var item=this.delete(index1);
   this.insert(index2,item);
 }
 
@@ -270,6 +262,11 @@ List.prototype.move=function move(index1,index2) {
  * @param  {integer} index2  second item to exchange
  */
 List.prototype.exchange=function exchange(index1,index2) {
+  if (((index1<0) || (index1>=this._values.length)) ||
+      ((index2<0) || (index2>=this._values.length))) {
+    throw new Error("index out of bounds");
+  }
+
   var item1=this.getItem(index1);
 
   this.setItem(index1,this.getItem(index2));
@@ -297,7 +294,7 @@ List.prototype.getSize=function getSize() {
  * removes every item from the list
  */
 List.prototype.clear=function clear() {
-  this.deleteRange(0,this.getSize()-1);
+  this.deleteRange(0,this.getSize());
 };
 
 /**
@@ -313,10 +310,22 @@ List.prototype.toArray=function toArray() {
  * @param  {integer} index   index to start inserting the array
  * @param  {Array.<*>} values  array to insert into the list
  */
-List.prototype.insertRange=function insertRange(index,values) {
+List.prototype.insertArray=function insertArray(index,values) {
+  if ((index<0) || (index>this._values.length)) {
+    throw new Error("index out of bounds");
+  }
+
   this._values.splice.apply(this._values,[index,0].concat(values));
-  this.notify("insertRange",index,values);
+  this.notify("insertRange",[index,index+values.length],values);
 };
+
+/**
+ * append an array to the curent list
+ * @param {Array.<*>} values array to append
+ */
+List.prototype.addArray=List.prototype.pushArray=List.prototype.enqueueArray=Interface.IfcFunc(function addArray(value) {
+  this.insertArray(this.getSize(),value);
+});
 
 /**
  * insert an other list into the current list
@@ -324,10 +333,22 @@ List.prototype.insertRange=function insertRange(index,values) {
  * @param  {IList} values  list to insert into this list
  */
 List.prototype.insertList=function insertList(index,list) {
-  var values=list._values;
+  if ((index<0) || (index>this._values.length)) {
+    throw new Error("index out of bounds");
+  }
+
+  var values=list.toArray();
   this._values.splice.apply(this._values,[index,0].concat(values));
   this.notify("insertRange",[index,index+values.length],values);
 };
+
+/**
+ * append an list to the current list
+ * @param {IList} values list to append
+ */
+List.prototype.addList=List.prototype.pushList=List.prototype.enqueueList=Interface.IfcFunc(function addList(value) {
+  this.insertList(this.getSize(),value);
+});
 
 /**
  * delete a range of indices from the list
@@ -335,6 +356,16 @@ List.prototype.insertList=function insertList(index,list) {
  * @param {integer} count number of elements
  */
 List.prototype.deleteRange=function deleteRange(index,count) {
+  if (count!=0) {
+    if ((index<0) || (index>=this._values.length)) {
+      throw new Error("index out of bounds");
+    }
+
+    if ((count<0) || (index+count>this._values.length)) {
+      throw new Error("invalid count");
+    }
+  }
+
   var del=this._values.splice(index,count);
   this.notify("deleteRange",[index,index+count],del);
 };
